@@ -1,0 +1,876 @@
+<!-- PAGE -->
+<div class="page modal-content" id="detailContainer">
+  <div class="popup__stycky-btn">
+    <button class="mfp-close popup__stycky-btn--close">×</button>
+  </div>
+
+  <div class="page__header">
+    <div class="page__header-nav" *ngIf="(!param_is_announcement && uri_title != 'блоге' && uri_title != 'комментариях')"><!--|| isBlogLink-->
+      <div class="page__nav" *ngIf="prev_id > 0 || next_id > 0">
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{prev_id}}" (click)="openSinglePost(prev_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="prev_id > 0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="prev_id < 1" style="opacity:0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{next_id}}" (click)="openSinglePost(next_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="next_id > 0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="next_id < 1" style="opacity:0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+      </div>
+    </div>
+
+    <div class="page__header-nav" *ngIf="param_blog_user_id > 0">
+      <div class="page__nav" *ngIf="prev_id > 0 || next_id > 0">
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{prev_id}}" (click)="openSinglePost(prev_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="prev_id > 0">Предыдущий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="prev_id < 1" style="opacity:0">Предыдущий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{next_id}}" (click)="openSinglePost(next_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="next_id > 0">Следующий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="next_id < 1" style="opacity:0">Следующий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+      </div>
+    </div>
+
+    <div class="page__header-bottom">
+      <!-- AVATAR -->
+
+      <div class="avatar avatar--avatar-img-max-width61">
+        <img class="avatar__avatar" src="{{object.user.avatar}}" alt="" *ngIf="object.user.avatar && object.user.avatar.length > 5">
+        <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!object.user.avatar || object.user.avatar.length < 5">
+        <div class="avatar__user-right">
+          <ng-container *ngIf="true || isRouted">
+            <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_profile2}">
+              <a href="javascript:void(0)" class="item__name simpleDropdown__target" (click)="toggleProfile2(object, !object.is_show_profile2)">
+                <ng-container>{{object.displayName}}</ng-container>
+              </a>
+              <div class="simpleDropdown__container">
+                <div class="user">
+                  <div class="user__header">
+                    <div [style.backgroundImage]="'url('+ object.user.avatar +')'" class="user__left" *ngIf="object.user.avatar && object.user.avatar.length > 5"></div>
+                    <div [style.backgroundImage]="'url(/frontend_assets_stihi/img/avatar_default.png)'" class="user__left" *ngIf="!object.user.avatar || object.user.avatar.length < 5"></div>
+
+                    <div class="user__right">
+                      <div class="user__right-name"><a routerLink="/@{{object.displayNameLogin}}" class="user__right-id">{{object.displayName}}</a></div>
+                      <div>
+                        <a routerLink="/@{{object.displayNameLogin}}" class="user__right-id">@{{object.displayNameBlog}}</a>
+                      </div>
+                      <div class="user__btn" *ngIf="auId > 0">
+                        <!-- BTN DEFAULT -->
+                        <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="subscribe()" *ngIf="!isSubscribedToUser">Подписаться</a>
+                        <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="unSubscribe()" *ngIf="isSubscribedToUser">Отписаться</a>
+                        <!-- /BTN DEFAULT -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user__body">
+                    <div class="user__btn"  *ngIf="false || TODO">
+                      <!-- BTN DEFAULT -->
+                      <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)">Заблокировать</a>
+                      <!-- /BTN DEFAULT -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="item__name-arrow" (click)="toggleProfile2(object, !object.is_show_profile2)"></button>
+          </ng-container>
+
+          <!-- VALUE -->
+          <div class="value">
+            <img title="{{getUserPower(object.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(object.user.val_power, 'image')" alt="">
+            <div class="value__value2" title="Репутация">{{getUserReputation(object.user.val_reputation)}}</div>
+          </div>
+          <!-- /VALUE -->
+        </div>
+      </div>
+      <!-- /AVATAR -->
+      <div class="popup-page__flag">
+
+        <div class="item3__popup-right">
+          <button class="item__remove" (click)="banContent()" *ngIf="auRole == 'a'"></button>
+          <div class="popup-page__flag" *ngIf="TODO">
+            <span class="item__right-top-flag" title="Голосовать против">
+
+              <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_flag}">
+
+                <span class="simpleDropdown__target">
+                  <button class=" flag" (click)="toggleFlag(object, !object.is_show_flag)" *ngIf="auId > 0"></button>
+                </span>
+
+                <div class="simpleDropdown__container simpleDropdown__container--right-top">
+                  <div class="simpleDropdown__vote">
+                    <div class="simpleDropdown__close-btn" (click)="object.is_show_flag = false">
+                      <button class="close-btn"></button>
+                    </div>
+                    <div class="simpleDropdown__ui-slider">
+                      <!-- SLIDER -->
+                      <div class="ui-slider slider" id="ui_slider_post_flag"></div>
+                      <!-- /SLIDER -->
+                      <span class="simpleDropdown__ui-value">-{{object.slider_percentage}}%</span>
+                    </div>
+                    <p>Голос против может снять вознаграждения и сделать пост менее видимым. Голосование против должно основываться
+                      на:
+                    </p>
+                    <ul class="list">
+                      <li class="list__li">Несогласие на награды</li>
+                      <li class="list__li">Мошенничество или плагиат</li>
+                      <li class="list__li">Разжигание ненависти или Интернет троллинг</li>
+                      <li class="list__li">Преднамеренная неправильная категоризация контента или спам</li>
+                    </ul>
+                    <div class="simpleDropdown__btn">
+                      <!-- BTN DEFAULT -->
+                      <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="saveFlag(object);">Голос против</a>
+                      <!-- /BTN DEFAULT -->
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="page__body modal-body">
+    <ng-container *ngIf="is_editing">
+      <form (submit)="savePost(object.id)">
+        <!-- BOX WHITE -->
+        
+
+        <div class="box-white" style="padding: 5px 5px" *ngIf="false">
+          <div class="box-white__form">
+            <div class="form">
+              <p class="form__desc" *ngIf="object.content.id == 0">Опубликованное произведение останется в блокчейне навсегда. Через 7 дней закроется возможность голосования, редактирования и комментирования.</p>
+              <div class="form__input">
+                <div class="input">
+                  <input class="input__input" style="font-weight:normal;font-size:12px;color:#757575" placeholder="Заголовок" type="text" [(ngModel)]="object.content.title" name="object_title">
+                </div>
+              </div>
+              <div class="form__input">
+                <div class="input">
+                  <input class="input__input" placeholder="Ссылка на изображение (для обложки)" type="text" [(ngModel)]="object.content.image" name="object_image" style="font-weight:normal;font-size:12px;color:#757575">
+                </div>
+                <div class="form__field-right">
+                  <a class="form__field-right-a" href="javascript:void(0)" (click)="switchMode();" *ngIf="object.content.input_mode">редактор</a>
+                  <a class="form__field-right-a" href="javascript:void(0)" (click)="switchMode();" *ngIf="!object.content.input_mode">Markdown</a>
+                </div>
+              </div>
+              <div class="form__textarea">
+                <div class="textarea">
+                  <textarea placeholder="Текст произведения" class="textarea__textarea object_description" *ngIf="object.content.input_mode" [(ngModel)]="object.content.body" name="object_description"></textarea>
+
+                </div>
+              </div>
+              <div class="form__input">
+                <div class="input">
+                  <select class="select__select" [(ngModel)]="object.content.category" name="object_category" style="font-weight:normal;font-size:12px;color:#757575">
+                    <option *ngFor="let c of categories" value="{{c.name}}">
+                      <ng-container *ngIf="c.level > 1">--</ng-container>
+                      <ng-container *ngIf="c.level == 1">-- </ng-container>
+                      {{c.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form__input">
+                <div class="input">
+                  <input class="input__input" style="font-weight:normal;font-size:12px;color:#757575" placeholder="Добавьте рубрики (теги) личного блога (через запятую)" type="text" [(ngModel)]="object.content.tags_input" name="object_tags">
+                </div>
+                <div class="form__field-right">
+                  <a class="form__field-right-a" href="https://golos.io/ru--golos/@on0tole/osnovy-oformleniya-postov-na-golose-polnyi-kurs-po-rabote-s-markdown" target="_blank">Курс по работе с Markdown
+                  </a>
+                </div>
+              </div>
+              <div class="form__bottom">
+                <div class="form__bottom-left">
+                  <div class="form__bottom-submit">
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(object.id)" *ngIf="object.content.id == 0">добавить произведение</a>
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(object.id)" *ngIf="object.content.id > 0">
+                      <ng-container *ngIf="!object.is_saving">обновить пост</ng-container>
+                      <ng-container *ngIf="object.is_saving">подождите ...</ng-container>
+                    </a>
+                  </div>
+                  <a class="form__bottom-clear-form" href="javascript:void(0)" (click)="cancelEditingPost();">отмена</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="box-white editor_form open_post_form" style="padding: 5px 5px">
+          <!--
+          <div class="content__header">
+            <h1 class="h1 h1--content-header">
+              <ng-container class="h1" *ngIf="object.content.id == 0">Публикация нового произведения</ng-container>
+              <ng-container class="h1" *ngIf="object.content.id > 0">Редактирование произведения</ng-container>
+            </h1>
+          </div>
+          -->
+          <div class="box-white__form">
+            <!-- FORM -->
+            <div class="form">
+       
+              <div style="display:inline-block;border-radius: 4px;border: thin solid #98929a;padding-top:8px; padding-bottom: 2px;margin-right: 40px;" class="image_editor_form">
+              <div style="display: inline-block;height: 90px!important;overflow: hidden;">
+                <div style="display: flex;justify-content: center;align-content: center;flex-direction: column;width: 260px; height: 90px!important; overflow: hiden!important;cursor: pointer;" class="postImageContainer" (click)="focusPostImageField()">
+                  <p class="form__desc" *ngIf="postImage.length < 10" style="padding: 0px;margin: 0px;margin-top:65px!important;position: absolute;
+          top: 140px;color:rgb(117, 117, 117);font-family:Roboto, sans-serif;font-size:12px;font-weight:400;margin-left: 15px;">Добавьте обложку поста</p>
+            <ckeditor [editor]="EditorImage" (ready)="onReady($event)" [(ngModel)]="postImage" name="object_image2" [config]='{"toolbar":{"items": [ "InsertImage" ],"viewportTopOffset": 250},"image":{"styles":[],"toolbar":[]}, "removePlugins": [ "ImageToolbar", "ImageCaption", "ImageStyle" ]}'></ckeditor>
+
+                </div>
+              </div>
+            </div>
+
+              <div class="editor_blockchain_info">
+                <p class="form__desc" *ngIf="object.content.id == 0">Опубликованное произведение останется в блокчейне навсегда.
+                  <br>Через 7 дней закроется возможность голосования.</p>
+              </div>
+              <div class="form__input" style="margin: 0px">
+                <!-- /INPUT -->
+                <div class="form__field-right">
+                <div (click)="object.content.isShowPreview = !object.content.isShowPreview" *ngIf="object.content.input_mode" class="editor_preview_button"><img src="/frontend_assets_stihi/img/eye.png" style="vertical-align: bottom"> <a href="javascript:void(0)" class="form__field-right-a" style="display: inline-block;width: 120px;text-align: left;">
+                  <ng-container *ngIf="!object.content.isShowPreview">Просмотреть
+                  </ng-container>
+                  <ng-container *ngIf="object.content.isShowPreview">Маркдаун
+                  </ng-container>
+
+                </a></div>
+                  <a class="form__field-right-a editor_type_title" href="javascript:void(0)" (click)="switchMode();" *ngIf="object.content.input_mode">Визуальный редактор</a>
+                  <a class="form__field-right-a editor_type_title" href="javascript:void(0)" (click)="switchMode();" *ngIf="!object.content.input_mode">Markdown</a>
+                </div>
+              </div>
+              <div class="post_form_content_container">
+                <div class="form__input" style="margin-bottom: 5px;" class="post_form_content_container_sub">
+                  <!-- INPUT -->
+                  <div class="input">
+                    <textarea rows="1" maxlength="200" placeholder="Заголовок" type="text" [(ngModel)]="object.content.title" name="object_title" class="input__input post_title_input" style="resize:none!important;overflow:hidden;padding-right: 84px;" onkeyup="$(this).height(20);$(this).height($(this).prop('scrollHeight'))"></textarea>
+                  </div>
+                </div>
+                <div class="form__textarea" style="margin-left: -2px;margin-right: -2px;">
+                  <!-- TEXTAREA -->
+                  <div class="textarea">
+                    <textarea placeholder="Текст произведения" class="textarea__textarea markDownTextarea object_description" *ngIf="object.content.input_mode && (!object.content.isShowPreview)" [(ngModel)]="object.content.body" name="object_description" style="min-height: 330px;padding-left: 84px;padding-right: 84px;border: none;" onkeyup="$(this).height(60);$(this).height($(this).prop('scrollHeight'))"></textarea>
+
+                    <ng-container *ngIf="object.content.input_mode && object.content.isShowPreview">
+                      <div class="item3 page editor_preview">
+                        <div class="item3__body">
+                          <ng-container *ngIf="true">
+                          <div class="item3__body-desc" style="text-align:left;margin:0px;width:808px!important;">
+                            <p class="item3__body-p" style="word-break: break-word;margin: 0;padding-top: 0px;">
+                              <markdown class="preview_html" [data]="object.content.body | processPostBody" *ngIf="object.content.input_mode"></markdown>
+                              <markdown class="preview_html" [data]="object.content.body.split('\n').join('')" *ngIf="!object.content.input_mode"></markdown>
+                            </p>
+                          </div>
+                          </ng-container>
+                        </div>
+                      </div>                
+                    </ng-container>
+
+                  <ng-container *ngIf="isEditorReady && !isMobile">
+                    <ckeditor [ngClass]="{'textareaMuted': object.content.body == 'Текст произведения' && !isMobile}" *ngIf="!object.content.input_mode" [editor]="Editor" [(ngModel)]="object.content.body" name="object_description" class="object_description"></ckeditor>
+                  </ng-container>
+                  <ng-container *ngIf="isEditorReady && isMobile">
+                    <ckeditor [ngClass]="{'textareaMuted': object.content.body == 'Текст произведения' && !isMobile}" *ngIf="!object.content.input_mode" [editor]="Editor" [(ngModel)]="object.content.body" name="object_description" class="object_description"></ckeditor>
+                  </ng-container>
+
+                  </div>
+                  <!-- /TEXTAREA -->
+                </div>
+              </div>
+              <div class="form__input">
+                <!-- INPUT -->
+                <div class="input" *ngIf="categories.length > 2">
+                  <select class="select__select" [(ngModel)]="object.content.category" name="object_category" style="font-weight:normal;font-size:12px;color:#757575">
+                    <option value="">Выберите рубрику</option>
+                    <option *ngFor="let c of categories" value="{{c.name}}">
+                      <ng-container *ngIf="c.level > 1">--</ng-container>
+                      <ng-container *ngIf="c.level == 1">-- </ng-container>
+                      {{c.name}}
+                    </option>
+                  </select>
+                </div>                
+                <!-- /INPUT -->
+              </div>
+              <div class="form__input">
+                <!-- INPUT -->
+                <div class="input">
+                  <input class="input__input" style="font-weight:normal;font-size:12px;color:#757575" placeholder="Добавьте рубрики (теги) личного блога (через запятую)" type="text" [(ngModel)]="object.content.tags_input" name="object_tags">
+                </div>
+                <!-- /INPUT -->
+                <div class="form__field-right">
+                  <a class="form__field-right-a" href="https://golos.io/ru--golos/@on0tole/osnovy-oformleniya-postov-na-golose-polnyi-kurs-po-rabote-s-markdown" target="_blank">Курс по работе с Markdown
+                  </a>
+                </div>
+              </div>
+              <div class="form__bottom">
+                <div class="form__bottom-left">
+                  <div class="form__bottom-submit">
+                    <!-- BTN DEFAULT -->
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(0)" *ngIf="object.content.id == 0">добавить произведение</a>
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(object.id)" *ngIf="object.content.id > 0">обновить пост</a>
+                    <!-- /BTN DEFAULT -->
+                  </div>
+                  <a class="form__bottom-clear-form" href="javascript:void(0)" (click)="cancelEditingPost();">отмена</a>
+                </div>
+              </div>
+
+              <ng-container *ngIf="false && object.content.input_mode && object.content.isShowPreview">
+                <div style="display: block;padding-top: 35px;color:#959297;font-size:14px">
+                  предварительный просмотр
+                  <hr>
+                </div>
+
+                <div class="item3 page">
+                  <div class="item3__body">
+                    <ng-container *ngIf="true">
+                    <div class="item3__body-desc" style="text-align:left;margin:0px;width:808px!important;">
+                      <p class="item3__body-p" style="word-break: break-word;margin: 0;">
+                        <markdown [data]="object.content.body | processPostBody" *ngIf="object.content.input_mode"></markdown>
+                        <markdown [data]="object.content.body.split('\n').join('')" *ngIf="!object.content.input_mode"></markdown>
+                      </p>
+                    </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- /CHECKBOX -->
+            </div>
+            <!-- /FORM -->
+          </div>
+        </div>
+
+
+
+        <div class="box-white" style="padding: 5px 5px" *ngIf="false">
+          <!--
+          <div class="content__header">
+            <h1 class="h1 h1--content-header">
+              <ng-container class="h1" *ngIf="object.content.id == 0">Публикация нового произведения</ng-container>
+              <ng-container class="h1" *ngIf="object.content.id > 0">Редактирование произведения</ng-container>
+            </h1>
+          </div>
+          -->
+          <div class="box-white__form">
+            <!-- FORM -->
+            <div class="form" style="max-width: 816px">
+              <div style="display: inline-block; margin-right: 30px;width: 260px;" onclick="$(this).find('.input__input').focus()">
+                <div style="text-align: center;border-radius: 4px;border: 1px solid #98929a;display: flex;justify-content: center;align-content: center;flex-direction: column;min-height:100px">
+                  <input class="input__input" placeholder="Ссылка на изображение (для обложки)" type="text" [(ngModel)]="object.content.image" name="object_image" style="font-weight:normal;font-size:12px;color:#757575;border: none;">
+                  <ng-container *ngIf="object.content.image && object.content.image.length > 4">
+                    <br>
+                    <img [src]="object.content.image" style="max-width: 300px;max-height: 120px;">
+                    <br>
+                </ng-container>
+                </div>
+              </div>
+              <div style="display: inline-block;width:500px;vertical-align: top;">
+                <p class="form__desc" *ngIf="object.content.id == 0">Опубликованное произведение останется в блокчейне навсегда.
+                  <br>Через 7 дней закроется возможность голосования.</p>
+              </div>
+              <div class="form__input" style="margin: 0px">
+                <!-- /INPUT -->
+                <div class="form__field-right">
+                <div (click)="object.content.isShowPreview = !object.content.isShowPreview" *ngIf="object.content.input_mode" style="display: inline-block;margin-right: 300px;"><a href="javascript:void(0)" class="form__field-right-a"><img src="/frontend_assets_stihi/img/eye.png" style="vertical-align: bottom"> Просмотреть</a></div>
+                  <a class="form__field-right-a" href="javascript:void(0)" (click)="switchMode();" *ngIf="object.content.input_mode">Визуальный редактор</a>
+                  <a class="form__field-right-a" href="javascript:void(0)" (click)="switchMode();" *ngIf="!object.content.input_mode">Markdown</a>
+                </div>
+              </div>
+              <div class="form__input">
+                <!-- INPUT -->
+                <div class="input">
+                  <input class="input__input" placeholder="Заголовок" type="text" [(ngModel)]="object.content.title" name="object_title" class="post_title_input">
+                </div>
+              </div>
+              <div class="form__textarea">
+                <!-- TEXTAREA -->
+                <div class="textarea">
+                  <textarea placeholder="Текст произведения" class="textarea__textarea object_description" *ngIf="object.content.input_mode" [(ngModel)]="object.content.body" name="object_description"></textarea>
+
+<!--
+                <ckeditor *ngIf="object.content.body && !object.content.input_mode" [editor]="Editor" [(ngModel)]="object.content.body" name="object_description"></ckeditor>
+-->
+                </div>
+                <!-- /TEXTAREA -->
+              </div>
+              <div class="form__input">
+                <!-- INPUT -->
+                <div class="input">
+                  <select class="select__select" [(ngModel)]="object.content.category" name="object_category" style="font-weight:normal;font-size:12px;color:#757575">
+                    <option value="">Выберите рубрику</option>
+                    <option *ngFor="let c of categories" value="{{c.name}}">
+                      <ng-container *ngIf="c.level > 1">--</ng-container>
+                      <ng-container *ngIf="c.level == 1">-- </ng-container>
+                      {{c.name}}
+                    </option>
+                  </select>
+                </div>
+                <!-- /INPUT -->
+              </div>
+              <div class="form__input">
+                <!-- INPUT -->
+                <div class="input">
+                  <input class="input__input" style="font-weight:normal;font-size:12px;color:#757575" placeholder="Добавьте рубрики (теги) личного блога (через запятую)" type="text" [(ngModel)]="object.content.tags_input" name="object_tags">
+                </div>
+                <!-- /INPUT -->
+                <div class="form__field-right">
+                  <a class="form__field-right-a" href="https://golos.io/ru--golos/@on0tole/osnovy-oformleniya-postov-na-golose-polnyi-kurs-po-rabote-s-markdown" target="_blank">Курс по работе с Markdown
+                  </a>
+                </div>
+              </div>
+              <div class="form__bottom">
+                <div class="form__bottom-left">
+                  <div class="form__bottom-submit">
+                    <!-- BTN DEFAULT -->
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(object.id)" *ngIf="object.content.id == 0">добавить произведение</a>
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(object.id)" *ngIf="object.content.id > 0">
+                      <ng-container *ngIf="!object.is_saving">обновить пост</ng-container>
+                      <ng-container *ngIf="object.is_saving">подождите ...</ng-container>
+                    </a>
+                    <!-- /BTN DEFAULT -->
+                  </div>
+                  <a class="form__bottom-clear-form" href="javascript:void(0)" (click)="cancelEditingPost();">отмена</a>
+                </div>
+              </div>
+              <!-- CHECKBOX -->
+
+              <ng-container *ngIf="object.content.input_mode && object.content.isShowPreview">
+                <div style="display: block;padding-top: 35px;color:#959297;font-size:14px">
+                  предварительный просмотр
+                  <hr>
+                </div>
+
+                <div class="item3 page">
+                  <div class="item3__body">
+                    <ng-container *ngIf="true">
+                    <div class="item3__body-desc" style="text-align:left;margin:0px;width:808px!important;">
+                      <p class="item3__body-p" style="word-break: break-word;margin: 0;margin-top:10px!important;">
+                        <markdown [data]="object.content.body | processPostBody" *ngIf="object.content.input_mode"></markdown>
+                        <markdown [data]="object.content.body.split('\n').join('') | oembed" *ngIf="!object.content.input_mode"></markdown>
+                      </p>
+                    </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+
+              <!-- /CHECKBOX -->
+            </div>
+            <!-- /FORM -->
+          </div>
+        </div>
+
+        <!-- /BOX WHITE -->
+      </form>
+    </ng-container>
+
+
+    <ng-container *ngIf="!is_editing">
+      <!-- ITEM3 -->
+      <div class="item3">
+        <div class="item3__header">{{object.title}}&nbsp;</div>
+        <div class="item3__body">
+          <div class="item3__body-img-wrap" *ngIf="false && object.image && object.image.length > 3">
+            <img class="item3__body-img" src="{{object.image}}" alt="">
+          </div>
+          <div class="item3__body-desc" style="text-align:left;margin:0px;">
+            <p class="item3__body-p" style="word-break: break-word; margin-top:10px!important;">
+              <markdown class="live-post" [data]="object.body | oembed"></markdown>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- ITEM3 -->
+      <!-- TAGS LIST -->
+      <div class="page__tags-list" style="margin-top: 6px;overflow: hidden;height: 100%;width:100%;">
+        <div class="" *ngIf="object.metadata.tags.length > 0" style="">
+          <ng-container *ngFor="let o of object.metadata.tags">
+            <div style="float: left;padding-top:5px">
+            <a routerLink="/@{{object.user.name}}/blog/{{o}}" class="tags-list__item" *ngIf="o != 'stihi-io' && o != ''">{{o}}</a>              
+            </div>
+          </ng-container>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+      <!-- /TAGS LISST -->
+
+      <div class="page__body-bottom">
+        <div class="page__body-bottom-left">
+          <!-- ITEM -->
+          <div class="item item--shadow-disable">
+            <div class="item__left">
+              <div class="item__desc-wrap item__desc-wrap--padding-l-0">
+                <div class="item__footer">
+                  <div class="item__footer-item">
+                    <div class="item__footer-item-left">
+
+                      <div class="item__footer-item">
+                        <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_profile}">
+                          <a href="javascript:void(0)" class="item__name simpleDropdown__target" (click)="toggleProfile(object, !object.is_show_profile)">
+                            <ng-container>{{object.displayName}}</ng-container>
+                          </a>
+                          <div class="simpleDropdown__container">
+                            <div class="user">
+                              <div class="user__header">
+                                <div [style.backgroundImage]="'url('+ object.user.avatar +')'" class="user__left" *ngIf="object.user.avatar && object.user.avatar.length > 5"></div>
+                                <div [style.backgroundImage]="'url(/frontend_assets_stihi/img/avatar_default.png)'" class="user__left" *ngIf="!object.user.avatar || object.user.avatar.length < 5"></div>
+
+                                <div class="user__right">
+                                  <div class="user__right-name"><a routerLink="/@{{object.displayNameLogin}}" class="user__right-id">{{object.displayName}}</a></div>
+                                  <div>
+                                    <a routerLink="/@{{object.displayNameLogin}}" class="user__right-id">@{{object.displayNameBlog}}</a>
+                                  </div>
+                                  <div class="user__btn" *ngIf="auId > 0">
+                                    <!-- BTN DEFAULT -->
+                                    <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="subscribe()" *ngIf="!isSubscribedToUser">Подписаться</a>
+                                    <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="unSubscribe()" *ngIf="isSubscribedToUser">Отписаться</a>
+                                    <!-- /BTN DEFAULT -->
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="user__body">
+                                <div class="user__btn"  *ngIf="false || TODO">
+                                  <!-- BTN DEFAULT -->
+                                  <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)">Заблокировать</a>
+                                  <!-- /BTN DEFAULT -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button class="item__name-arrow" (click)="toggleProfile(object, !object.is_show_profile)"></button>
+                      </div>
+
+                      <div class="item__footer-item">
+                        <!-- VALUE -->
+                        <div class="value">
+                          <img title="{{getUserPower(object.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(object.user.val_power, 'image')" alt="">
+                          <div class="value__value2" title="Репутация">{{getUserReputation(object.user.val_reputation)}}</div>
+                        </div>
+                        <!-- /VALUE -->
+                      </div>
+                      <div class="item__footer-item">
+                        <div class="item__date">{{object.time | normalizeDate | date:'dd/LL/yyyy, HH:mm'}}</div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ITEM -->
+        </div>
+        <div class="page__body-bottom-right">
+          <!-- BTN SECONDARY -->
+          <a class="btn-secondary btn-secondary--small" routerLink="/posts/{{object.id}}/announce" *ngIf="auId > 0">анонсировать</a>
+          <!-- /BTN SECONDARY -->
+        </div>
+      </div>
+      <div class="page__body-bottom">
+        <ng-container>
+        <div class="page__body-bottom-left">
+          <!-- ITEM -->
+          <div class="item item--shadow-disable">
+            <div class="item__left">
+              <div class="item__desc-wrap item__desc-wrap--padding-l-0">
+                <div class="item__footer">
+                  <div class="item__footer-item">
+                    <div class="item__footer-item-right">
+                      <ng-container>
+                        <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_vote}">
+                          <!-- BUTTON CHECK -->
+                          <button class="simpleDropdown__target button-check" [ngClass]="{'button-check--state2': object.is_voted, 'button-check--state1': !object.is_voted}" (click)="toggleVote(object, !object.is_show_vote)">
+                            <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                              <g>
+                                <circle cx="128" cy="128" r="117.6" stroke="#000" stroke-miterlimit="10" fill="none" stroke-width="18"></circle>
+                                <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                              </g>
+                            </svg>
+                          </button>
+                          <!-- /BUTTON CHECK -->
+                          <div class="simpleDropdown__container simpleDropdown__container--top simpleDropdown__container-padding">
+                            <div class="simpleDropdown__close-btn" (click)="object.is_show_vote = false">
+                              <button class="close-btn"></button>
+                            </div>
+                            <div class="slider__container-wrap">
+                              <div class="slider__container-wrap-btn">
+                                <button class="button-check" [ngClass]="{'button-check--state2': object.current_user_votes && object.current_user_votes[object.id], 'button-check--state1': !object.current_user_votes || !object.current_user_votes[object.id]}" (click)="saveVote(object.id, object.vote_slider_percentage, true)">
+                                  <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                                    <g>
+                                      <circle cx="128" cy="128" r="117.6" stroke="#000" stroke-miterlimit="10" fill="none" stroke-width="18"></circle>
+                                      <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                                    </g>
+                                  </svg>
+                                </button>
+                              </div>
+                              <!-- /BUTTON CHECK -->
+                              <div class="simpleDropdown__ui-slider simpleDropdown__ui-slider--container">
+                                <!-- SLIDER -->
+                                <div class="ui-slider1111 slider" id="ui_slider_post_detail"></div>
+                                <!-- /SLIDER -->
+                                <span class="simpleDropdown__ui-value simpleDropdown__ui-value--color-normal">{{object.vote_slider_percentage}}%</span>
+                              </div>
+                            </div>
+                            <!-- BUTTON CHECK -->
+                          </div>
+                        </div>
+                      </ng-container>
+
+                      <ng-container>
+                      <div class="item__footer-item item__footer-item--margin-l-15">
+                        <!-- CONSTROLS -->
+                        <div class="controls">
+                          <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_votes}">
+                            <div class="controls__counter simpleDropdown__target" (click)="toggleVotes(object, !object.is_show_votes)">
+                              <span title="{{object.votes_count}} голосов">{{object.votes_count}}</span>
+                            </div>
+                            <div class="simpleDropdown__container">
+                              <ul class="golos-list">
+                                <li class="golos-list__li" *ngFor="let v of votes">
+                                  <a class="golos-list__a" routerLink="/@{{v.voter}}">
+                                  <span class="golos-list__span">
+                                    <ng-container *ngIf="v.weight >= 0">+</ng-container>
+                                    <ng-container *ngIf="v.weight < 0">-</ng-container>
+
+                                    <ng-container *ngIf="!v.nickname">{{v.voter}}</ng-container>
+                                    <ng-container *ngIf="v.nickname">{{v.nickname}}</ng-container>
+                                  </span>
+                                    <span>{{v.weight/100}}%</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div class="controls__price simpleDropdown" [ngClass]="{'simpleDropdown--show': object.is_show_price}">
+                            <span class="simpleDropdown__target" (click)="togglePrice(object, !object.is_show_price)">{{getEarnings(object, 3)}} GOLOS</span>
+                            <div class="simpleDropdown__container">
+                              <p>Потенциальная выплата {{getEarnings(object, 3)}} GOLOS)</p>
+                              <p>через 7 дней</p>
+                            </div>
+                          </div>
+
+                          <span class="controls__comments-btn"><span title="{{object.top_comments_count}} комментариев">{{object.top_comments_count}}</span></span>
+                        </div>
+
+                        <!-- /CONSTROLS -->
+                      </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ITEM -->
+        </div>
+        </ng-container>
+        <div class="page__body-bottom-right">
+
+          <div class="page__body-bottom-right-controls">
+
+            <!--
+            <a class="page__body-edit" href="javascript:void(0)" *ngIf="auName == object.author || auRole == 'a'" (click)="deleteContent();">Удалить</a>
+            -->
+            <a class="page__body-edit" href="javascript:void(0)" *ngIf="auName == object.user.name" href="javascript:void(0)" (click)="editPost()">Редактировать</a>
+            <a class="page__body-add-comment" href="javascript:void(0)" (click)="toggleNewComment(object)" *ngIf="auId > 0">Добавить комментарий</a>
+            <!-- SOCIAL NETWORKS -->
+            <div class="social-networks">
+              <!--
+              <ul class="social-networks__ul">
+                <li class="social-networks__li">
+                  <a title="Поделиться" class="social-networks__a" target="_blank" href="https://www.livejournal.com/update.bml?subject={{share.subject}}&event={{share.body}}">
+                    <svg x="0px" y="0px" viewBox="0 0 304.999 304.999" style="enable-background:new 0 0 304.999 304.999;" xml:space="preserve">
+                    <g>
+                      <path fill="#888888" id="XMLID_17_" d="M160.662,19.47c-18.934,0-37.323,3.668-54.693,10.881L76.353,0.732c-0.819-0.82-2.094-0.967-3.082-0.359 C44.436,18.201,19.773,42.865,1.947,71.699c-0.61,0.986-0.462,2.262,0.358,3.082l28.39,28.383 c-8.491,18.637-12.808,38.5-12.808,59.074c0,78.719,64.049,142.762,142.775,142.762c78.721,0,142.765-64.043,142.765-142.762 C303.427,83.515,239.383,19.47,160.662,19.47z M217.225,148.664l9.943,42.082l9.543,44.395l-44.337-9.533l-42.055-9.893 L36.712,102.111c14.252-29.338,38.339-52.619,68.114-65.832L217.225,148.664z"></path>
+                      <path fill="#888888" id="XMLID_20_" d="M221.76,187.396l-7.522-33.023c-25.891,11.889-46.404,32.402-58.283,58.295l33.023,7.52 C195.989,206.165,207.747,194.41,221.76,187.396z"></path>
+                    </g>
+                  </svg>
+                  </a>
+                </li>
+                <li class="social-networks__li">
+                  <a title="Поделиться" class="social-networks__a" target="_blank" href="http://vk.com/share.php?url={{share.url}}&title={{share.subject}}">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    viewBox="0 0 548.358 548.358" style="enable-background:new 0 0 548.358 548.358;" xml:space="preserve">
+                    <g>
+                      <path fill="#888888" d="M545.451,400.298c-0.664-1.431-1.283-2.618-1.858-3.569c-9.514-17.135-27.695-38.167-54.532-63.102l-0.567-0.571 l-0.284-0.28l-0.287-0.287h-0.288c-12.18-11.611-19.893-19.418-23.123-23.415c-5.91-7.614-7.234-15.321-4.004-23.13 c2.282-5.9,10.854-18.36,25.696-37.397c7.807-10.089,13.99-18.175,18.556-24.267c32.931-43.78,47.208-71.756,42.828-83.939 l-1.701-2.847c-1.143-1.714-4.093-3.282-8.846-4.712c-4.764-1.427-10.853-1.663-18.278-0.712l-82.224,0.568 c-1.332-0.472-3.234-0.428-5.712,0.144c-2.475,0.572-3.713,0.859-3.713,0.859l-1.431,0.715l-1.136,0.859 c-0.952,0.568-1.999,1.567-3.142,2.995c-1.137,1.423-2.088,3.093-2.848,4.996c-8.952,23.031-19.13,44.444-30.553,64.238 c-7.043,11.803-13.511,22.032-19.418,30.693c-5.899,8.658-10.848,15.037-14.842,19.126c-4,4.093-7.61,7.372-10.852,9.849 c-3.237,2.478-5.708,3.525-7.419,3.142c-1.715-0.383-3.33-0.763-4.859-1.143c-2.663-1.714-4.805-4.045-6.42-6.995 c-1.622-2.95-2.714-6.663-3.285-11.136c-0.568-4.476-0.904-8.326-1-11.563c-0.089-3.233-0.048-7.806,0.145-13.706 c0.198-5.903,0.287-9.897,0.287-11.991c0-7.234,0.141-15.085,0.424-23.555c0.288-8.47,0.521-15.181,0.716-20.125 c0.194-4.949,0.284-10.185,0.284-15.705s-0.336-9.849-1-12.991c-0.656-3.138-1.663-6.184-2.99-9.137 c-1.335-2.95-3.289-5.232-5.853-6.852c-2.569-1.618-5.763-2.902-9.564-3.856c-10.089-2.283-22.936-3.518-38.547-3.71 c-35.401-0.38-58.148,1.906-68.236,6.855c-3.997,2.091-7.614,4.948-10.848,8.562c-3.427,4.189-3.905,6.475-1.431,6.851 c11.422,1.711,19.508,5.804,24.267,12.275l1.715,3.429c1.334,2.474,2.666,6.854,3.999,13.134c1.331,6.28,2.19,13.227,2.568,20.837 c0.95,13.897,0.95,25.793,0,35.689c-0.953,9.9-1.853,17.607-2.712,23.127c-0.859,5.52-2.143,9.993-3.855,13.418 c-1.715,3.426-2.856,5.52-3.428,6.28c-0.571,0.76-1.047,1.239-1.425,1.427c-2.474,0.948-5.047,1.431-7.71,1.431 c-2.667,0-5.901-1.334-9.707-4c-3.805-2.666-7.754-6.328-11.847-10.992c-4.093-4.665-8.709-11.184-13.85-19.558 c-5.137-8.374-10.467-18.271-15.987-29.691l-4.567-8.282c-2.855-5.328-6.755-13.086-11.704-23.267 c-4.952-10.185-9.329-20.037-13.134-29.554c-1.521-3.997-3.806-7.04-6.851-9.134l-1.429-0.859c-0.95-0.76-2.475-1.567-4.567-2.427 c-2.095-0.859-4.281-1.475-6.567-1.854l-78.229,0.568c-7.994,0-13.418,1.811-16.274,5.428l-1.143,1.711 C0.288,140.146,0,141.668,0,143.763c0,2.094,0.571,4.664,1.714,7.707c11.42,26.84,23.839,52.725,37.257,77.659 c13.418,24.934,25.078,45.019,34.973,60.237c9.897,15.229,19.985,29.602,30.264,43.112c10.279,13.515,17.083,22.176,20.412,25.981 c3.333,3.812,5.951,6.662,7.854,8.565l7.139,6.851c4.568,4.569,11.276,10.041,20.127,16.416 c8.853,6.379,18.654,12.659,29.408,18.85c10.756,6.181,23.269,11.225,37.546,15.126c14.275,3.905,28.169,5.472,41.684,4.716h32.834 c6.659-0.575,11.704-2.669,15.133-6.283l1.136-1.431c0.764-1.136,1.479-2.901,2.139-5.276c0.668-2.379,1-5,1-7.851 c-0.195-8.183,0.428-15.558,1.852-22.124c1.423-6.564,3.045-11.513,4.859-14.846c1.813-3.33,3.859-6.14,6.136-8.418 c2.282-2.283,3.908-3.666,4.862-4.142c0.948-0.479,1.705-0.804,2.276-0.999c4.568-1.522,9.944-0.048,16.136,4.429 c6.187,4.473,11.99,9.996,17.418,16.56c5.425,6.57,11.943,13.941,19.555,22.124c7.617,8.186,14.277,14.271,19.985,18.274 l5.708,3.426c3.812,2.286,8.761,4.38,14.853,6.283c6.081,1.902,11.409,2.378,15.984,1.427l73.087-1.14 c7.229,0,12.854-1.197,16.844-3.572c3.998-2.379,6.373-5,7.139-7.851c0.764-2.854,0.805-6.092,0.145-9.712 C546.782,404.25,546.115,401.725,545.451,400.298z"></path>
+                    </g>
+                  </svg>
+                  </a>
+                </li>
+                <li class="social-networks__li">
+                  <a title="Поделиться" class="social-networks__a" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{share.url}}">
+                    <svg enable-background="new -0.001 -0.266 32 32" overflow="visible" version="1.1" viewBox="-0.001 -0.266 32 32" xml:space="preserve"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <path fill="#888888" d="M30.172,0H1.828C0.823,0,0,0.824,0,1.828v28.344C0,31.176,0.823,32,1.828,32h28.344 C31.177,32,32,31.176,32,30.172V1.828C32,0.824,31.177,0,30.172,0z M27.161,17.949h-4.396v11.766h-4.479V17.949h-3.111v-4.234h3.111 c0,0,0-1.736,0-3.617c0-2.844,1.837-5.455,6.071-5.455c1.714,0,2.981,0.166,2.981,0.166l-0.1,3.953c0,0-1.293-0.012-2.703-0.012 c-1.527,0-1.771,0.703-1.771,1.871c0,0.145,0,0.195,0,0.199c0,0.328,0,1.121,0,2.895h4.596L27.161,17.949z"
+                      id="facebook_1_"></path>
+                  </svg>
+                  </a>
+                </li>
+                <li class="social-networks__li">
+                  <a title="Поделиться" class="social-networks__a" target="_blank" href="https://twitter.com/home?status={{share.url}}">
+                    <svg enable-background="new 0 0 32 32" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Flat_copy">
+                      <path fill="#888888" d="M20.046,3.071c-2.89,1.052-4.716,3.764-4.509,6.732l0.07,1.145l-1.156-0.14c-4.207-0.537-7.884-2.36-11.006-5.423 L1.919,3.866L1.526,4.988c-0.832,2.501-0.3,5.143,1.433,6.92c0.925,0.982,0.716,1.122-0.878,0.537 c-0.555-0.186-1.041-0.327-1.087-0.257c-0.161,0.164,0.393,2.291,0.832,3.133c0.601,1.17,1.826,2.314,3.168,2.993l1.133,0.537 l-1.341,0.023c-1.294,0-1.341,0.023-1.202,0.515c0.462,1.519,2.289,3.133,4.323,3.834l1.433,0.49l-1.248,0.748 c-1.849,1.077-4.023,1.684-6.197,1.729C0.855,26.213,0,26.307,0,26.378c0,0.233,2.821,1.541,4.462,2.057 c4.925,1.519,10.775,0.864,15.168-1.73c3.122-1.847,6.242-5.517,7.7-9.071c0.787-1.892,1.572-5.353,1.572-7.011 c0-1.076,0.07-1.216,1.364-2.501c0.764-0.748,1.48-1.566,1.619-1.8c0.232-0.445,0.207-0.445-0.971-0.047 c-1.965,0.702-2.243,0.608-1.271-0.444c0.716-0.748,1.572-2.104,1.572-2.501c0-0.07-0.346,0.046-0.74,0.257 C30.059,3.819,29.134,4.17,28.44,4.38l-1.248,0.398l-1.133-0.772c-0.625-0.42-1.502-0.888-1.965-1.028 C22.914,2.651,21.11,2.697,20.046,3.071z"></path>
+                    </g>
+                  </svg>
+                  </a>
+                </li>
+              </ul>
+              -->
+
+              <div class="controls__price simpleDropdown simpleDropdown--show" style="display: inline-block;margin-right: 10px">
+              <span class="simpleDropdown__target" (mouseenter)="showSharpayTooltip = true" (mouseleave)="showSharpayTooltip = false">
+                <a class="sharpay_widget_custom" title="Поделись и получи свои токены бесплатно" data-sharpay="fd422" [attr.data-image]="sharpayImage" style="width: 127px; cursor: pointer;display: inline-block;" (click)="openSharpay()">
+              <svg id="defaultSVG" style="display: block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 299.62 56.81"><defs></defs><path class="a" d="M273.81,28.08a10.1,10.1,0,0,0-3-1.38L269.59,32a1.76,1.76,0,0,1-1,1.29,6.26,6.26,0,0,1-2.74.42,10.55,10.55,0,0,1-2.31-.25,11.26,11.26,0,0,1-1.89-.61,7.3,7.3,0,0,1-1.45-.73,7.56,7.56,0,0,1-.85-.64h-.85l-1.17,5,.17.08a14,14,0,0,0,3.29,1c.58.11,1.18.19,1.78.26l-.85,3.67h5.66l.86-3.73a11.57,11.57,0,0,0,4.35-1.51,5.48,5.48,0,0,0,2.79-4.83A3.84,3.84,0,0,0,273.81,28.08Z" transform="translate(0 0)"></path><path class="a" d="M107.23,22.85a3.87,3.87,0,0,0-2.52.79,3.28,3.28,0,0,0-1.06,2.27h6.77a3.51,3.51,0,0,0-.8-2.24A3.14,3.14,0,0,0,107.23,22.85Z" transform="translate(0 0)"></path><path class="a" d="M273.76,19.32c-.41-.09-.83-.14-1.24-.19l.86-3.73h-5.66l-.82,3.72a11.3,11.3,0,0,0-4.39,1.54,5.53,5.53,0,0,0-2.77,4.88,4,4,0,0,0,1.4,3.09,8.94,8.94,0,0,0,3.2,1.57l1.13-4.9a7.08,7.08,0,0,1,.22-.75,1.54,1.54,0,0,1,.86-1,6.51,6.51,0,0,1,2.66-.41,9.74,9.74,0,0,1,3.16.52A9,9,0,0,1,275,25h.81l1.12-4.79-.17-.08A12.91,12.91,0,0,0,273.76,19.32Z" transform="translate(0 0)"></path><path class="a" d="M202.24,19.61a9.21,9.21,0,0,1-2.77,1.14,4.14,4.14,0,0,0-3.09-1.46,4.47,4.47,0,0,0-4.32,4.61v0a4.69,4.69,0,0,0,.08,1.06,11.92,11.92,0,0,1-8.88-4.81,4.36,4.36,0,0,0-.57,2.37,4.6,4.6,0,0,0,1.87,3.82,3.85,3.85,0,0,1-1.95-.57v.12A4.67,4.67,0,0,0,186,30.48a4.9,4.9,0,0,1-1.14.16,2.76,2.76,0,0,1-.81-.08,4.22,4.22,0,0,0,4,3.18,8.37,8.37,0,0,1-5.3,2,5.35,5.35,0,0,1-1.06-.08,11.65,11.65,0,0,0,6.6,2.12c7.9,0,12.22-7,12.22-13.12v-.57a9.62,9.62,0,0,0,2.28-2.6,6.57,6.57,0,0,1-2.44.73A4.61,4.61,0,0,0,202.24,19.61Z" transform="translate(0 0)"></path><path class="a" d="M67.9,29.82a2.5,2.5,0,0,0-1.18.7,1.71,1.71,0,0,0-.39,1.17,2.83,2.83,0,0,0,.09.82,1.09,1.09,0,0,0,.39.53,1.94,1.94,0,0,0,.77.42,5.74,5.74,0,0,0,1.49.13,4.49,4.49,0,0,0,1.62-.32,5.2,5.2,0,0,0,1.37-.79V29.22c-.68.06-1.41.14-2.19.23A12,12,0,0,0,67.9,29.82Z" transform="translate(0 0)"></path><path class="a" d="M291.28,0H8.34A8.33,8.33,0,0,0,0,8.34V48.47a8.33,8.33,0,0,0,8.32,8.34h283a8.33,8.33,0,0,0,8.34-8.32V8.34A8.33,8.33,0,0,0,291.28,0ZM32.9,36.21a12,12,0,0,1-6.81,1.71,19.39,19.39,0,0,1-4.3-.45,16.21,16.21,0,0,1-3.12-1l-.14-.07v-5h.91c.27.19.6.41,1,.64a9.75,9.75,0,0,0,1.53.73,12.81,12.81,0,0,0,2,.61,10.06,10.06,0,0,0,2.32.25,6,6,0,0,0,2.35-.34.92.92,0,0,0,.65-.86.74.74,0,0,0-.35-.72,6,6,0,0,0-1.7-.53q-.63-.13-1.68-.3a19.65,19.65,0,0,1-2-.4,7.19,7.19,0,0,1-3.67-2A5.1,5.1,0,0,1,18.67,25a5.23,5.23,0,0,1,2.5-4.41,11.62,11.62,0,0,1,6.7-1.72,17.61,17.61,0,0,1,3.83.4,15.74,15.74,0,0,1,2.86.87l.15.06v4.85h-.87a11.45,11.45,0,0,0-2.79-1.36,9.7,9.7,0,0,0-3.16-.53,5.88,5.88,0,0,0-2.2.36c-.78.31-.78.7-.78.83a.89.89,0,0,0,.33.76,5.19,5.19,0,0,0,1.88.61l1.84.33c.66.11,1.34.25,2,.42a6.6,6.6,0,0,1,3.41,1.9,4.88,4.88,0,0,1,1.12,3.26A5.35,5.35,0,0,1,32.9,36.21Zm23.91-10.5V37.43H50.67v-9a18.17,18.17,0,0,0-.11-2.09,4.15,4.15,0,0,0-.34-1.47,1.72,1.72,0,0,0-.8-.73,4.25,4.25,0,0,0-1.58-.24,4.68,4.68,0,0,0-1.48.24,7.92,7.92,0,0,0-1.54.7V37.38H38.69V12.58h6.13V21a14.2,14.2,0,0,1,2.53-1.53,7.53,7.53,0,0,1,3.17-.64,6.15,6.15,0,0,1,4.62,1.73A7.08,7.08,0,0,1,56.81,25.71Zm21.4-.43,0,12.15H72.11V35.82l-.73.53a8.29,8.29,0,0,1-1.31.79,8.53,8.53,0,0,1-1.77.58,11.19,11.19,0,0,1-2,.18A6.24,6.24,0,0,1,62,36.29a5.43,5.43,0,0,1-1.77-4.14,5.6,5.6,0,0,1,.91-3.28,6,6,0,0,1,2.54-2,13.76,13.76,0,0,1,3.94-1c1.47-.19,3-.34,4.57-.43a1.74,1.74,0,0,0-1-1.64,8.21,8.21,0,0,0-3.4-.54,10.24,10.24,0,0,0-2.9.48c-1,.33-1.79.58-2.25.76h-.85V19.82h.19c.6-.15,1.56-.34,2.92-.55a26.15,26.15,0,0,1,4.05-.35c3.24,0,5.62.51,7.07,1.52A5.5,5.5,0,0,1,78.21,25.28Zm17.86,0h-.74a5.91,5.91,0,0,0-1.18-.18c-.52,0-1-.07-1.3-.07a13.16,13.16,0,0,0-2.08.16,12.24,12.24,0,0,0-1.78.46V37.43H82.86v-18H89v2.3a11.09,11.09,0,0,1,2.91-1.81,7.29,7.29,0,0,1,2.61-.54h.68l.67.05h.22Zm9.05,7.17a6.83,6.83,0,0,0,4.11,1,9.39,9.39,0,0,0,3.36-.62,10.91,10.91,0,0,0,2.58-1.34l.07-.05h1v4.93l-.15.06a22.18,22.18,0,0,1-3.64,1.12,19.2,19.2,0,0,1-3.78.35c-3.57,0-6.34-.82-8.26-2.43a8.67,8.67,0,0,1-2.9-7,9.35,9.35,0,0,1,2.75-7.06,10.39,10.39,0,0,1,7.47-2.61c2.91,0,5.13.76,6.61,2.24a8.75,8.75,0,0,1,2.23,6.4l0,2.3H103.67A3.65,3.65,0,0,0,105.12,32.41ZM152.9,45.92V33.13h4.73l1.18-5.91H152.9V24.86q0-3.54,3.54-3.54h2.37V15.41h-4.73c-4.34,0-7.08,3.4-7.08,8.27v3.54h-4.7v5.91H147V47.24c-.4,0-.79.06-1.19.06a18.92,18.92,0,1,1,7.06-1.38Zm39.48,1.39h0a18.9,18.9,0,1,1,18.9-18.9A18.9,18.9,0,0,1,192.35,47.32Zm48.05-15.74H232.1v8.25h-4.78V31.57H219V26.92h8.32V18.67h4.78v8.25h8.33Zm43.12,6.09a18.86,18.86,0,0,1-25.68,7.2l-9.69,2.5,2.64-9.4a18.87,18.87,0,1,1,32.73-.3Z" transform="translate(0 0)"></path></svg>    
+                </a>
+              </span>
+              <!--
+              <div class="simpleDropdown__container" *ngIf="showSharpayTooltip" style="width: 200px">
+                Поделись и получи свои токены бесплатно
+              </div>
+            -->
+              </div>
+
+            </div>
+            <div class="sharpayShareCount">{{sharpayShareCnt}}</div>
+            <!-- /SOCIAL NETWORKS -->
+          </div>
+
+        </div>
+      </div>
+
+    </ng-container>
+
+    <form (submit)="saveComment(object)" *ngIf="object.is_comment_form_visible" id="postCommentForm">
+      <div style="padding-top: 20px;padding-bottom: 20px;">
+        <ckeditor class="comment_editor" [editor]="Editor" *ngIf="true" debounce="500" [(ngModel)]="object.comment_body" name="object_comment_body{{object.id}}">
+        </ckeditor>
+
+        <br>
+        <div class="comments-container">
+          <div class="comments-container__btn">
+            <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="saveComment(object)">
+              <ng-container *ngIf="!object.is_sending">ПОСТ</ng-container>
+              <ng-container *ngIf="object.is_sending">Подождите...</ng-container>
+            </a>
+            <a class="link" href="javascript:void(0)" (click)="cancelComment(object)">ОТМЕНА</a>
+          </div>
+          <div class="comments-container__link-right" *ngIf="false">
+            <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="object.comment_input_mode = !object.comment_input_mode"
+               *ngIf="!object.comment_input_mode">редактор</a>
+            <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="object.comment_input_mode = !object.comment_input_mode"
+               *ngIf="object.comment_input_mode">Markdown</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="page__body-nav">
+      <div class="page__nav page__nav--arrows-d" *ngIf="((object.prev_blog_id && object.prev_blog_id.id > 0) || (object.next_blog_id && object.next_blog_id.id > 0)) && param_blog_user_id < 1">
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{object.prev_blog_id.id}}" (click)="openSinglePost(object.prev_blog_id.id, {isNavLink: true, isBlogLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="object.prev_blog_id && object.prev_blog_id.id > 0">Предыдущий пост в блоге автора</a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="!object.prev_blog_id || object.prev_blog_id.id < 1" style="opacity:0">Предыдущий пост в блоге автора</a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{object.next_blog_id.id}}" (click)="openSinglePost(object.next_blog_id.id, {isNavLink: true, isBlogLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="object.next_blog_id && object.next_blog_id.id > 0">Следующий пост в блоге автора</a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="!object.next_blog_id || object.next_blog_id.id < 1" style="opacity:0">Следующий пост в блоге автора</a>
+      </div>
+      <div class="page__nav" *ngIf="(prev_id > 0 || next_id > 0) && (!param_is_announcement) && uri_title != 'блоге' && uri_title != 'комментариях'"><!--|| isBlogLink-->
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{prev_id}}" (click)="openSinglePost(prev_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="prev_id > 0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="prev_id < 1" style="opacity:0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{next_id}}" (click)="openSinglePost(next_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="next_id > 0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="next_id < 1" style="opacity:0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+      </div>
+
+      <div class="page__nav" *ngIf="param_blog_user_id > 0 && (prev_id > 0 || next_id > 0)">
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{prev_id}}" (click)="openSinglePost(prev_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="prev_id > 0">Предыдущий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="prev_id < 1" style="opacity:0">Предыдущий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{next_id}}" (click)="openSinglePost(next_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="next_id > 0">Следующий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="next_id < 1" style="opacity:0">Следующий пост в <ng-container>блоге</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+      </div>
+
+    </div>
+
+    <div class="page__comments-list" *ngIf="object.comments_count > 0">
+      <div class="page__cooments-list-header">
+        <div class="page__comments-list-left">
+          <div class="page__comments-list-title">Комментарии к этому произведению</div>
+          <a href="javascript:void(0)" class="page__comments-list-left-a" *ngIf="isCommentsVisible" (click)="isCommentsVisible = !isCommentsVisible">Показать один</a>
+          <a href="javascript:void(0)" class="page__comments-list-left-a" *ngIf="!isCommentsVisible" (click)="isCommentsVisible = !isCommentsVisible">Показать все</a>
+        </div>
+        <div class="page__comments-list-right" *ngIf="TODO">
+          <div class="page__comments-list-title">Порядок сортировки:</div>
+          <a href="javascript:void(0)" class="page__comments-list-left-a page__comments-list-left-a--arrow">Сначало старое</a>
+        </div>
+      </div>
+      <!-- COMMENTS LIST -->
+      <div class="comments-list">
+
+        <ng-container *ngFor="let o of comments; index as i; let first = first;">
+          <div class="comments-list__item" *ngIf="isCommentsVisible || (!isCommentsVisible && first)">
+            <div class="comments-list__item-header"></div>
+            <div class="comments-list__item-body">
+              <app-comments [returnUri]="['/posts/'+object.id]" [comments]="[o]" [current_user_votes]="current_user_votes" [votes]="comments_votes" [level]="0" [postId]="object.id"></app-comments>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+      <!-- /COMMENTS LIST -->
+    </div>
+  </div>
+  <div class="page__footer">
+    <div class="page__footer-slide-top" *ngIf="false">
+      <a class="js-scroll-top page__footer-slide-top-link" href="javascript:void(0)">К началу произведения</a>
+    </div>
+
+    <div class="page__footer-nav" *ngIf="isCommentsVisible && comments.length > 0">
+      <div class="page__nav page__nav--arrows-d" *ngIf="((object.prev_blog_id && object.prev_blog_id.id > 0) || (object.next_blog_id && object.next_blog_id.id > 0)) && param_blog_user_id < 1">
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{object.prev_blog_id.id}}" (click)="openSinglePost(object.prev_blog_id.id, {isNavLink: true, isBlogLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="object.prev_blog_id && object.prev_blog_id.id > 0">Предыдущий пост в блоге автора</a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="!object.prev_blog_id || object.prev_blog_id.id < 1" style="opacity:0">Предыдущий пост в блоге автора</a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{object.next_blog_id.id}}" (click)="openSinglePost(object.next_blog_id.id, {isNavLink: true, isBlogLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="object.next_blog_id && object.next_blog_id.id > 0">Следующий пост в блоге автора</a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="!object.next_blog_id || object.next_blog_id.id < 1" style="opacity:0">Следующий пост в блоге автора</a>
+      </div>
+      <div class="page__nav" *ngIf="(prev_id > 0 || next_id > 0) && (!param_is_announcement) && uri_title != 'блоге' && uri_title != 'комментариях'"><!--|| isBlogLink-->
+        <a class="page__nav-a page__nav-a--prev" href="/posts/{{prev_id}}" (click)="openSinglePost(prev_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="prev_id > 0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--prev" href="javascript:void(0)" *ngIf="prev_id < 1" style="opacity:0">Предыдущий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+
+        <a class="page__nav-a page__nav-a--next" href="/posts/{{next_id}}" (click)="openSinglePost(next_id, {isNavLink: true, category: param_category, leaderTime: param_leaderTime})" *ngIf="next_id > 0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+        <a class="page__nav-a page__nav-a--next" href="javascript:void(0)" *ngIf="next_id < 1" style="opacity:0">Следующий пост в {{uri_title}}<ng-container *ngIf="param_leaderTimeText != ''"> | {{param_leaderTimeText}}</ng-container><ng-container *ngIf="param_category != ''"> | {{param_category}}</ng-container></a>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<!-- /PAGE -->
+
+<div class="popup-small p-confirm-slider-post" style="display: none">
+  <div class="popup-small__header">
+    <div class="popup-small__title">Подтвердить голосование</div>
+  </div>
+  <div class="popup-small__body">
+
+    <div class="popup-small__item">
+      Удаление голоса сбросит Ваши кураторские вознаграждения за этот пост
+    </div>
+
+    <div class="popup-small__item-btns">
+      <div class="popup-small__item-btns-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--xsmall btn-default--min-width-150" href="javascript:void(0)" (click)="cancelVote(object);">ок</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+      <div class="popup-small__item-btns-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-secondary btn-secondary--small btn-default--min-width-150" onClick="$.modal.close();" href="javascript:void(0)">отмена</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </div>
+  </div>
+</div>

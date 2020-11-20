@@ -1,0 +1,107 @@
+<div class="content__body">
+  <!-- BOX WHITE -->
+  <div class="box-white box-white--padding">
+    <!--
+    TODO
+    <div class="box-white__header">
+      <div class="box-white__header-tabs">
+        <div class="tabs">
+          <ul class="tabs__ul">
+            <li class="tabs__li">
+              <a href="javascript:void(0)" (click)="is_online = true;" [ngClass]="{'tabs__a--active': is_online}" class="tabs__a">Онлайн</a>
+            </li>
+            <li class="tabs__li">
+              <a href="javascript:void(0)" (click)="is_online = false;" [ngClass]="{'tabs__a--active': !is_online}" class="tabs__a">Все</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="box-white__header">
+      <div class="box-white__header-tabs">
+        <div class="tabs">
+          <ul class="tabs__ul">
+            <li class="tabs__li">
+              Авторов: {{objects.length}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+<div class="box-white__body">
+  <div class="box-white__body-top">
+    <div class="box-white__body-top-filter-field">
+      <!-- FILTER FIELD -->
+          <div class="filter-field">
+            <input class="filter-field__input" placeholder="Фильтр..." type="text" [(ngModel)]="filter">
+            <button class="filter-field__btn">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <g>
+                  <path class="filter-field__cls-1" d="M157.68 132.5h-56.51L11.18 17h236.5l-90 115.5zM157.68 132.5V211l-56.51 28.33V132.5"
+                  />
+                </g>
+              </svg>
+            </button>
+          </div>
+          <!-- /FILTER FIELD -->
+        </div>
+        <div class="box-white__body-top-tabs2">
+          <!-- TABS2 -->
+          <div class="tabs2">
+            <ul class="tabs2__ul">
+              <li class="tabs2__li">
+                <a href="javascript:void(0)" (click)="type = 'name';setType();loadUsers();" [ngClass]="{'tabs2__a--active': type == 'name'}" class="tabs2__a">по алфавиту</a>
+              </li>
+              <li class="tabs2__li" *ngIf="TODO">
+                <a href="javascript:void(0)" (click)="type = 'status';setType();loadUsers();" [ngClass]="{'tabs2__a--active': type == 'status'}" class="tabs2__a">по статусу</a>
+              </li>
+              <li class="tabs2__li">
+                <a href="javascript:void(0)" (click)="type = 'new';setType();loadUsers();" [ngClass]="{'tabs2__a--active': type == 'new'}" class="tabs2__a">по дате регистрации</a>
+              </li>
+            </ul>
+          </div>
+          <!-- /TABS2 -->
+        </div>
+      </div>
+      <div class="box-white__body-bottom">
+        <div class="box-white__body-bottom-user-list">
+          <!-- USER AVATAR LIST -->
+          <div class="user-avatar-list">
+
+            <div class="user-avatar-list__col" *ngFor="let z of [0, 1]">
+              <ng-container *ngFor="let o of objects | filter:'users':filter; index as i">
+                <div class="user-avatar-list__item" *ngIf="o.column == z">
+                  <div class="avatar avatar--avatar-img-max-width31">
+                    <img class="avatar__avatar" src="{{o.avatar}}" alt="" *ngIf="o.avatar && o.avatar.length > 5">
+                    <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!o.avatar || o.avatar.length < 5">
+
+                    <div class="avatar__user-right avatar__user-right--flex">
+                      <a routerLink="/@{{o.displayNameBlog}}" class="avatar__avatar-name avatar__avatar-name--size-medium" style="font-size: 16px">
+                        <span style="text-overflow: ellipsis;overflow:hidden;max-width: 350px;display: inline-block;white-space: nowrap;">
+                          <ng-container>{{o.displayName}}</ng-container>
+                          ({{o.stihi_user_time | normalizeDate | date:'dd/LL/yyyy'}})
+                        </span>
+                      </a>
+                      <!-- VALUE -->
+                      <div class="value">
+                        <img title="{{getUserPower(o.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o.val_power, 'image')" alt="">
+                        <div class="value__value2" title="Репутация">{{getUserReputation(o.val_reputation)}}</div>
+                      </div>
+                      <!-- /VALUE -->
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+          <!-- /USER AVATAR LIST -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /BOX WHITE -->
+</div>

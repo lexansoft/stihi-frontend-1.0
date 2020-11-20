@@ -1,0 +1,292 @@
+<ng-container *ngFor="let o of comments; let indx = index; trackBy: trackByFn ">
+  <div class="comments-list__item-comment" [ngClass]="{'comments-list__item-comment--level2': level == 1, 'comments-list__item-comment--level3': level > 1}">
+    <div class="comment">
+      <div class="comment__inner">
+        <div class="comment__left">
+          <img class="avatar__avatar" src="{{o.user.avatar}}" alt="" *ngIf="o.user.avatar && o.user.avatar.length > 5">
+          <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!o.user.avatar || o.user.avatar.length < 5">
+        </div>
+        <div class="comment__right">
+          <div class="comment__right-top">
+            <div class="comment__right-top-left">
+              <div class="post__right-bottom-username">
+
+                <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_profile}">
+                  <a class="post__right-user-name simpleDropdown__target" href="javascript:void(0)" (click)="toggleProfile(o, !o.is_show_profile2)">
+                    <ng-container>{{o.displayName}}</ng-container>
+                  </a>
+
+                  <div class="simpleDropdown__container">
+                    <div class="user">
+                      <div class="user__header">
+                        <div [style.backgroundImage]="'url('+ o.user.avatar +')'" class="user__left" *ngIf="o.user.avatar && o.user.avatar.length > 5"></div>
+                        <div [style.backgroundImage]="'url(/frontend_assets_stihi/img/avatar_default.png)'" class="user__left" *ngIf="!o.user.avatar || o.user.avatar.length < 5"></div>
+
+                        <div class="user__right">
+                          <div class="user__right-name"><a routerLink="/@{{o.displayNameBlog}}" class="user__right-id" style="color: #3b363d;text-decoration: none;font-size: 14px;font-weight: 600;">
+                            <ng-container>{{o.displayName}}</ng-container>
+                          </a>
+                          </div>
+                          <div>
+                            <a routerLink="/@{{o.displayNameBlog}}" class="user__right-id" style="color: #3b363d;text-decoration: none;font-size: 14px;">@{{o.displayNameBlog}}</a>
+                          </div>
+                          <div class="user__btn" *ngIf="userId > 0">
+                            <!-- BTN DEFAULT -->
+                            <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="subscribe(o)" *ngIf="!o.isSubscribedToUser">Подписаться</a>
+                            <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="unSubscribe(o)" *ngIf="o.isSubscribedToUser">Отписаться</a>
+                            <!-- /BTN DEFAULT -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="user__body" *ngIf="TODO">
+                        <div class="user__btn">
+                          <!-- BTN DEFAULT -->
+                          <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)">Заблокировать</a>
+                          <!-- /BTN DEFAULT -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="post__right-rating">
+                <!--{{getUserPower(o.val_power, 'number')}}-->
+                <img title="{{getUserPower(o.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o.user.val_power, 'image')" alt="">
+                <span title="Репутация" class="post__right-rating-value">{{getUserReputation(o.user.val_reputation)}}</span>
+              </div>
+            </div>
+            <div class="post__right-block">
+              <button class="post__block"  *ngIf="userRole == 'a'" (click)="banContent(o.id)">
+                <img src="/frontend_assets_stihi/img/remove.png" alt="">
+              </button>
+
+              <div class="popup-page__flag" *ngIf="TODO">
+                <span class="item__right-top-flag" title="Голосовать против" *ngIf="userId > 0">
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_flag}">
+                      <span class="simpleDropdown__target" (click)="toggleFlag(o, !o.is_show_flag)" >
+                        <!-- FLAG -->
+                        <button class="flag"></button>
+                        <!-- /FLAG -->
+                      </span>
+                      <div class="simpleDropdown__container simpleDropdown__container--right-top2">
+                        <div class="simpleDropdown__vote">
+                          <div class="simpleDropdown__close-btn" (click)="o.is_show_flag = false">
+                            <button class="close-btn"></button>
+                          </div>
+                          <div class="simpleDropdown__ui-slider">
+                            <!-- SLIDER -->
+                            <div class="ui-slider slider" id="ui_slider_post_flag_comment{{o.id}}"></div>
+                            <!-- /SLIDER -->
+                            <span class="simpleDropdown__ui-value">-{{o.slider_percentage}}%</span>
+                          </div>
+                          <p>Голос против может снять вознаграждения и сделать пост менее видимым. Голосование против должно
+                            основываться на:
+                          </p>
+                          <ul class="list">
+                            <li class="list__li">Несогласие на награды</li>
+                            <li class="list__li">Мошенничество или плагиат</li>
+                            <li class="list__li">Разжигание ненависти или Интернет троллинг</li>
+                            <li class="list__li">Преднамеренная неправильная категоризация контента или спам</li>
+                          </ul>
+                          <div class="simpleDropdown__btn">
+                            <!-- BTN DEFAULT -->
+                            <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="saveFlag(o);">Голос против</a>
+                            <!-- /BTN DEFAULT -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+
+              </div>
+            </div>
+          </div>
+          <div class="post__right-middle">
+            <p class="post__right-desc" style="padding-bottom: 4px;overflow: hidden!important;word-break: break-word;">
+              <markdown class="markdown-container comment-markdown" [data]="o.body | oembed"></markdown>
+            </p>
+          </div>
+          <div class="post__right-bottom">
+            <div class="post__right-bottom-item">
+
+              <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_vote}" style="height: 16px">
+                <button class="post__right-vote button-check simpleDropdown__target" [ngClass]="{'button-check--state2': current_user_votes && current_user_votes[o.id], 'button-check--state1': !current_user_votes || !current_user_votes[o.id]}" (click)="toggleVote(o, !o.is_show_vote)">
+                  <svg height="16" viewBox="0 0 256 256" width="16" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                      <circle cx="128" cy="128" fill="none" r="117.6" stroke="#000" stroke-miterlimit="10" stroke-width="18"></circle>
+                      <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                    </g>
+                  </svg>
+                </button>
+
+                <div class="simpleDropdown__container simpleDropdown__container--top simpleDropdown__container-padding">
+                  <div class="simpleDropdown__close-btn" (click)="o.is_show_vote = false">
+                    <button class="close-btn"></button>
+                  </div>
+                  <div class="slider__container-wrap">
+                    <div class="slider__container-wrap-btn">
+                      <button class="button-check" [ngClass]="{'button-check--state2': current_user_votes && current_user_votes[o.id], 'button-check--state1': !current_user_votes || !current_user_votes[o.id]}" (click)="saveCommentVote(o)">
+                        <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                          <g>
+                            <circle cx="128" cy="128" r="117.6" stroke="#000" stroke-miterlimit="10" fill="none" stroke-width="18"></circle>
+                            <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                          </g>
+                        </svg>
+                      </button>
+                    </div>
+                    <!-- /BUTTON CHECK -->
+                    <div class="simpleDropdown__ui-slider simpleDropdown__ui-slider--container">
+                      <!-- SLIDER -->
+                      <div class="ui-slider slider" id="ui_slider_comment_vote_{{o.unique_id}}"></div>
+                      <!-- /SLIDER -->
+                      <span class="simpleDropdown__ui-value simpleDropdown__ui-value--color-normal">{{o.vote_slider_percentage}}%</span>
+                    </div>
+                  </div>
+                  <!-- BUTTON CHECK -->
+                </div>
+              </div>
+
+              <ng-container>
+              <div class="post__right-date">{{o.time | normalizeDate | date:'dd/LL/yyyy, HH:mm'}}</div>
+              <!-- CONSTROLS -->
+              <div class="controls">
+                <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_votes}">
+                  <div title="{{o.votes_count}} голосов" class="controls__counter simpleDropdown__target" (click)="toggleVotes(o, !o.is_show_votes)">{{o.votes_count}}</div>
+                  <div class="simpleDropdown__container">
+                    <ul class="golos-list" *ngIf="votes && votes[o.id]">
+
+                      <li class="golos-list__li" *ngFor="let v of votes[o.id]">
+                        <a class="golos-list__a" routerLink="/@{{v.voter}}">
+                                  <span class="golos-list__span">
+                                    <ng-container *ngIf="v.weight >= 0">+</ng-container>
+                                    <ng-container *ngIf="v.weight < 0">-</ng-container>
+
+                                    <ng-container *ngIf="!v.nickname">{{v.voter}}</ng-container>
+                                    <ng-container *ngIf="v.nickname">{{v.nickname}}</ng-container>
+                                  </span>
+                          <span>{{v.weight/100}}%</span>
+                        </a>
+                      </li>
+
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="controls__price simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_price}">
+                  <span class="simpleDropdown__target" (click)="togglePrice(o, !o.is_show_price)">{{getEarnings(o, 3)}} GOLOS</span>
+                  <div class="simpleDropdown__container">
+                    <p>Потенциальная выплата {{getEarnings(o, 3)}} GOLOS</p>
+                    <p>через 7 дней</p>
+                  </div>
+                </div>
+
+                <span class="controls__comments-btn">
+                  <span title="{{o.comments.length}} комментариев" *ngIf="o.comments">{{o.comments.length}}</span>
+                  <span title="0 комментариев" *ngIf="!o.comments">0</span>
+                </span>
+              </div>
+	          </ng-container>
+              <!-- /CONSTROLS -->
+
+              <!--
+              <a href="javascript:void(0)" class="comment_discussion_green_button" *ngIf="returnUri != '/posts/comments' && level == 0" routerLink="/posts/{{postId}}/comments/{{o.id}}" [queryParams]="{returnUri: returnUri}"></a>
+              -->
+              <a href="javascript:void(0)" class="comment_discussion_green_button" *ngIf="returnUri != '/posts/comments' && level == 0" href="/posts/{{postId}}/comments/{{o.id}}" (click)="openComments(o.id, postId, returnUri)"></a>
+              <a href="javascript:void(0)" class="comment_discussion_green_button" *ngIf="returnUri == '/posts/comments' && level == 0" href="/posts/{{postId}}/comments/{{o.id}}" (click)="openComments(o.id, postId)"></a>
+
+              <a href="javascript:void(0)" class="comment__anser-btn" (click)="toggleEditComment(o)" style="margin-right: 10px;" *ngIf="userRole != 'u' || auName == o.user.name">Редактировать</a>
+              <a href="javascript:void(0)" class="comment__anser-btn" (click)="deleteContent(o.id)" style="margin-right: 5px;" *ngIf="false && (userRole != 'u' || auName == o.user.name)">Удалить</a>
+              <a href="javascript:void(0)" class="comment__anser-btn" style="padding-left:5px;" (click)="toggleNewComment(o)" *ngIf="userId > 0">Ответить</a>
+
+              <br>
+
+              <form (submit)="saveComment(o, true)" *ngIf="o.is_comment_edit_form_visible" style="width: 100%">
+                <div style="padding-top: 20px;padding-bottom: 20px;margin-right:30px;">
+              <textarea class="textarea__textarea" style="height:80px;width:600px" [(ngModel)]="o.body" name="object_comment_body_edit{{o.id}}"
+                        *ngIf="false"></textarea>
+
+              <ckeditor class="comment_editor" [editor]="Editor"  *ngIf="true"  debounce="500" [(ngModel)]="o.body" name="object_comment_body_edit{{o.id}}" (click)="onEditorClick()">
+              </ckeditor>
+
+                  <br>
+                  <div class="comments-container">
+                    <div class="comments-container__btn">
+                      <a class="btn-default--color-white btn-default btn-default--small" href="javascript:void(0)" (click)="saveComment(o, true)">
+                        <ng-container *ngIf="!o.is_sending">ПОСТ</ng-container>
+                        <ng-container *ngIf="o.is_sending">Подождите...</ng-container>
+                      </a>
+                      <a class="link" href="javascript:void(0)" (click)="cancelComment(o)">ОТМЕНА</a>
+                    </div>
+                    <div class="comments-container__link-right" *ngIf="false">
+                      <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="o.input_mode = !o.input_mode"
+                         *ngIf="!o.input_mode">редактор</a>
+                      <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="o.input_mode = !o.input_mode"
+                         *ngIf="o.input_mode">Markdown</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <form (submit)="saveComment(o)" *ngIf="o.is_comment_form_visible" style="width: 100%">
+                <div style="padding-top: 20px;padding-bottom: 20px;margin-right:30px;">
+              <textarea class="textarea__textarea" style="height:80px;width:600px" [(ngModel)]="o.comment_body" name="object_comment_body{{o.id}}"
+                        *ngIf="false"></textarea>
+
+              <ckeditor class="comment_editor" [editor]="Editor"  *ngIf="true"  debounce="500" [(ngModel)]="o.comment_body" name="object_comment_body{{o.id}}" (click)="onEditorClick()">
+              </ckeditor>
+
+                  <br>
+                  <div class="comments-container">
+                    <div class="comments-container__btn">
+                      <a class="btn-default--color-white btn-default btn-default--small" href="javascript:void(0)" (click)="saveComment(o)">
+                        <ng-container *ngIf="!o.is_sending">ПОСТ</ng-container>
+                        <ng-container *ngIf="o.is_sending">Подождите...</ng-container>
+                      </a>
+                      <a class="link" href="javascript:void(0)" (click)="cancelComment(o)">ОТМЕНА</a>
+                    </div>
+                    <div class="comments-container__link-right" *ngIf="false">
+                      <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="o.input_mode = !o.input_mode"
+                         *ngIf="!o.input_mode">редактор</a>
+                      <a class="form__field-right-a" style="margin-left:50px;" href="javascript:void(0)" (click)="o.input_mode = !o.input_mode"
+                         *ngIf="o.input_mode">Markdown</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="popup-small p-confirm-slider-vote-{{o.id}}" style="display: none">
+    <div class="popup-small__header">
+      <div class="popup-small__title">Подтвердить голосование</div>
+    </div>
+    <div class="popup-small__body">
+
+      <div class="popup-small__item">
+        Удаление голоса сбросит Ваши кураторские вознаграждения за этот пост
+      </div>
+
+      <div class="popup-small__item-btns">
+        <div class="popup-small__item-btns-btn">
+          <!-- BTN DEFAULT -->
+          <a class="btn-default btn-default--xsmall btn-default--min-width-150" href="javascript:void(0)" (click)="cancelVote(o);">ок</a>
+          <!-- /BTN DEFAULT -->
+        </div>
+        <div class="popup-small__item-btns-btn">
+          <!-- BTN DEFAULT -->
+          <a class="btn-secondary btn-secondary--small btn-default--min-width-150" onClick="$.modal.close();" href="javascript:void(0)">отмена</a>
+          <!-- /BTN DEFAULT -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-comments *ngIf="o.comments" [comments]="o.comments | reverse" [current_user_votes]="current_user_votes" [votes]="votes" [level]="level + 1"
+                [postId]="postId"></app-comments>
+</ng-container>

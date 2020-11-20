@@ -1,0 +1,204 @@
+<div class="items-list__item" style="cursor: default;" *ngIf="isLoading">
+  <!-- POST // -->
+  <div class="post" style="text-align:center;display:inline-block;width:100%;cursor: default;">
+    <img src="/frontend_assets_stihi/img/loading.gif" style="height: 150px;">
+  </div>
+</div>
+<div class="items-list__item" *ngIf="!isLoading">
+  <div class="post">
+    <div class="post__inner">
+      <div class="post__left">
+        <a href="/posts/{{o.id}}" (click)="openSinglePost(o.id, page)" class="js-form-popup">
+          <ng-container *ngIf="o.image && o.image.length > 3">
+            <div *ngIf="!isOffensiveFilter" [style.backgroundImage]="'url('+ o.image +')'" class="post__img"></div>
+            <div *ngIf="isOffensiveFilter" style="background: url('/frontend_assets_stihi/img/hqdefault.jpg')" class="post__img"></div>
+          </ng-container>
+
+          <ng-container *ngIf="!o.image || o.image.length < 3">
+            <div class="post__img" style="width: 0px;"></div>
+          </ng-container>
+        </a>
+      </div>
+      <div class="post__right" [ngClass]="{'padding-post-no-image': !o.image || o.image.length < 3}">
+        <div class="post__right-top">
+          <a href="/posts/{{o.id}}" class="post__name" (click)="openSinglePost(o.id, page)">
+            <ng-container *ngIf="!isOffensiveFilter">{{o.title}}</ng-container>
+            <ng-container *ngIf="isOffensiveFilter">Осторожно, контент содержит нецензурную лексику</ng-container>
+          </a>
+        </div>
+
+        <div class="post__right-block">
+          <button class="post__block" (click)="banContent()" *ngIf="userRole == 'a'">
+            <img src="/frontend_assets_stihi/img/remove.png" alt="">
+          </button>
+          <button class="comment__flag" *ngIf="TODO">
+            <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_flag}">
+
+                <span class="simpleDropdown__target">
+                  <img src="/frontend_assets_stihi/img/flag.png" alt="" (click)="toggleFlag(o, !o.is_show_flag)" *ngIf="userId > 0">
+                </span>
+
+              <div class="simpleDropdown__container simpleDropdown__container--right-top">
+                <div class="simpleDropdown__vote">
+                  <div class="simpleDropdown__close-btn" (click)="o.is_show_flag = false">
+                    <button class="close-btn"></button>
+                  </div>
+                  <div class="simpleDropdown__ui-slider">
+                    <!-- SLIDER -->
+                    <div class="ui-slider slider" id="ui_slider_post_flag_{{o.unique_id}}"></div>
+                    <!-- /SLIDER -->
+                    <span class="simpleDropdown__ui-value">-{{o.slider_percentage}}%</span>
+                  </div>
+                  <p>Голос против может снять вознаграждения и сделать пост менее видимым. Голосование против должно основываться
+                    на:
+                  </p>
+                  <ul class="list">
+                    <li class="list__li">Несогласие на награды</li>
+                    <li class="list__li">Мошенничество или плагиат</li>
+                    <li class="list__li">Разжигание ненависти или Интернет троллинг</li>
+                    <li class="list__li">Преднамеренная неправильная категоризация контента или спам</li>
+                  </ul>
+                  <div class="simpleDropdown__btn">
+                    <!-- BTN DEFAULT -->
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="saveFlag(o);">Голос против</a>
+                    <!-- /BTN DEFAULT -->
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </button>
+        </div>
+
+        <div class="post__right-middle">
+          <p class="post__right-desc">
+            <a href="/posts/{{o.id}}" (click)="openSinglePost(o.id, page)">
+              <ng-container *ngIf="!isOffensiveFilter">{{o.body}}</ng-container>
+              <ng-container *ngIf="isOffensiveFilter">Осторожно, контент содержит нецензурную лексику</ng-container>
+            </a>
+          </p>
+        </div>
+        <div class="post__right-bottom">
+          <div class="post__right-bottom-item">
+
+            <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_vote}" style="height: 16px">
+              <button class="simpleDropdown__target post__right-vote button-check" [ngClass]="{'button-check--state2': current_user_votes && current_user_votes[o.nodeos_id], 'button-check--state1': !current_user_votes || !current_user_votes[o.nodeos_id]}" (click)="toggleVote(o, !o.is_show_vote)">
+                <svg height="16" viewBox="0 0 256 256" width="16" xmlns="http://www.w3.org/2000/svg">
+                  <g>
+                    <circle cx="128" cy="128" fill="none" r="117.6" stroke="#000" stroke-miterlimit="10" stroke-width="18"></circle>
+                    <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                  </g>
+                </svg>
+              </button>
+              <div class="simpleDropdown__container simpleDropdown__container--top simpleDropdown__container-padding">
+                <div class="simpleDropdown__close-btn" (click)="o.is_show_vote = false">
+                  <button class="close-btn"></button>
+                </div>
+                <div class="slider__container-wrap">
+                  <div class="slider__container-wrap-btn">
+                    <button class="button-check" [ngClass]="{'button-check--state2': current_user_votes && current_user_votes[o.nodeos_id], 'button-check--state1': !current_user_votes || !current_user_votes[o.nodeos_id]}" (click)="saveVote()">
+                      <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                        <g>
+                          <circle cx="128" cy="128" r="117.6" stroke="#000" stroke-miterlimit="10" fill="none" stroke-width="18"></circle>
+                          <path class="button-check__cls-2" d="M128 199V56.67l63.19 63.18M128 56.67l-61.65 61.64"></path>
+                        </g>
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- /BUTTON CHECK -->
+                  <div class="simpleDropdown__ui-slider simpleDropdown__ui-slider--container">
+                    <!-- SLIDER -->
+                    <div class="ui-slider42424 slider" id="ui_slider_{{o.unique_id}}"></div>
+                    <!-- /SLIDER -->
+                    <span class="simpleDropdown__ui-value simpleDropdown__ui-value--color-normal">{{slider_percentage}}%</span>
+                  </div>
+                </div>
+                <!-- BUTTON CHECK -->
+              </div>
+            </div>
+
+            <div class="post__right-bottom-username">
+              <div class="simpleDropdown">
+                <a routerLink="/@{{o.displayNameBlog}}" class="post__right-user-name noarrow">{{o.displayName}}</a>
+              </div>
+            </div>
+            <div class="post__right-rating">
+              <img title="{{getUserPower(o.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o.user.val_power, 'image')" alt="">
+              <span title="Репутация" class="post__right-rating-value">{{getUserReputation(o.user.val_reputation)}}</span>
+            </div>
+            <div class="post__right-date">{{o.time | normalizeDate | date:'dd/LL/yyyy, HH:mm'}}</div>
+            <!-- CONSTROLS -->
+            <div class="controls">
+              <div class="simpleDropdown">
+                <div title="{{o.votes_count}} голосов" class="controls__counter">{{o.votes_count}}</div>
+                <div class="simpleDropdown__container">
+                  <ul class="golos-list">
+
+                  	<!--
+                    <li class="golos-list__li" *ngFor="let v of votes[o.id]">
+                      <a class="golos-list__a" routerLink="/@{{v.voter}}">
+                        <span class="golos-list__span">
+                          <ng-container *ngIf="v.weight >= 0">+</ng-container>
+                          <ng-container *ngIf="v.weight < 0">-</ng-container>
+
+                          <ng-container *ngIf="!v.nickname">{{v.voter}}</ng-container>
+                          <ng-container *ngIf="v.nickname">{{v.nickname}}</ng-container>
+                        </span>
+                        <span>{{v.weight/100}}%</span>
+                      </a>
+                    </li>
+	                -->
+
+                  </ul>
+                </div>
+              </div>
+
+              <div class="controls__price simpleDropdown" [ngClass]="{'simpleDropdown--show': o.is_show_price}">
+                <span class="simpleDropdown__target" (click)="togglePrice(o, !o.is_show_price)">{{getEarnings(o, 3)}} GOLOS</span>
+                <div class="simpleDropdown__container">
+                  <p>Потенциальная выплата {{getEarnings(o, 3)}} GOLOS</p>
+                  <p>через 7 дней</p>
+                </div>
+              </div>
+
+              <span title="{{o.top_comments_count}} комментариев" class="controls__comments-btn">{{o.top_comments_count}}</span>
+            </div>
+            <!-- /CONSTROLS -->
+            <ng-container *ngIf="o.metadata && o.metadata.tags && o.metadata.tags.length > 1">
+              <a *ngIf="!is_blog" routerLink="/posts/{{listTitle}}/{{o.metadata.tags[1]}}" class="post__rught-bottom-cat">{{o.metadata.tags[1]}}</a>
+              <a *ngIf="is_blog" routerLink="/@{{o.author}}/blog/{{o.metadata.tags[1]}}" class="post__rught-bottom-cat">{{o.metadata.tags[1]}}</a>
+            </ng-container>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /POST -->
+</div>
+
+<div class="popup-small mfp-hide p-confirm-slider-{{o.nodeos_id}}" *ngIf="!isLoading">
+  <div class="popup-small__header">
+    <div class="popup-small__title">Подтвердить голосование</div>
+  </div>
+  <div class="popup-small__body">
+
+    <div class="popup-small__item">
+      Удаление голоса сбросит Ваши кураторские вознаграждения за этот пост
+    </div>
+
+    <div class="popup-small__item-btns">
+      <div class="popup-small__item-btns-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--xsmall btn-default--min-width-150" href="javascript:void(0)" (click)="cancelVote(o);">ок</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+      <div class="popup-small__item-btns-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-secondary btn-secondary--small btn-default--min-width-150" onClick="$.magnificPopup.close()" href="javascript:void(0)">отмена</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </div>
+  </div>
+</div>

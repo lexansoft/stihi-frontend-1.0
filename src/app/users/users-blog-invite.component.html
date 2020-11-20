@@ -1,0 +1,78 @@
+<div class="content__body">
+    <!-- BOX WHITE -->
+    <div class="box-white box-white--padding">
+        <div class="content__header">
+            <h1 class="h1 h1--content-header">Пригласить читателей в блог автора
+                <!-- USER NAME -->
+                <span class="user-name">
+
+                <a routerLink="/@{{object.displayNameBlog}}" class="item__name">{{object.displayName}}</a>
+
+                <div class="value">
+                  <img title="{{getUserPower(object.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(object.val_power, 'image')" alt="">
+                  <div class="value__value2" style="font-size:18px;color:#3b363d;">{{getUserReputation(object.val_reputation)}}</div>
+                </div>
+              </span>
+                <!-- /USER NAME -->
+            </h1>
+        </div>
+        <div class="box-white__body box-white__body--mod">
+            <p>Вы можете пригласить читателей в свой блог, разместив приглашение на главной странице, на страницах лент произведений и комментариев в блоке «Авторы приглашают».</p>
+            <p>После размещения приглашения, ссылка на Ваш блог появится в начале списка и будет находиться там до тех пор, пока другие авторы не разместят свои приглашения.</p>
+            <p>Время нахождения приглашения в блоке зависит от активности других авторов.</p>
+            <p>Стоимость - 20 GOLOS</p>
+            <!-- BTN DEFAULT -->
+            <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="invite()">пригласить</a>
+            <!-- /BTN DEFAULT -->
+            </div>
+        </div>
+        <!-- /BOX WHITE -->
+</div>
+
+<!-- POPUP AUTH -->
+<div id="p-auth" class="popup-small mfp-hide">
+    <form (submit)="auth()" autocomplete="off">
+        <div class="popup-small__header2">
+            <div class="popup-small__title2">Пожалуйста, авторизируйтесь для выполнения следующих действий</div>
+        </div>
+        <div class="popup-small__body">
+            <div class="popup-small__item popup-small__item--table">
+                <div class="popup-small__item-send-input">
+                    <div class="popup-small__item-input-wrap">
+                        <!-- SEND INPUT -->
+                        <div class="send-input">
+                            <span class="send-input__left">@</span>
+                            <input value="" class="send-input__send" type="text" placeholder="логин" name="secret_login" autocomplete="off" [(ngModel)]="secret.login">
+                        </div>
+                        <!-- /SEND INPUT -->
+                    </div>
+                </div>
+            </div>
+            <div class="popup-small__item">
+                <!-- INPUT -->
+                <div class="input">
+                    <input class="input__input" type="text" placeholder="Ключ" name="secret_key" autocomplete="off" [(ngModel)]="secret.active_key"  style="font-size: 13px!important">
+                </div>
+                <!-- /INPUT -->
+                <div class="popup-small__item-desc">Эта операция требует ввода Вашего ключа владельца или ввода
+                    <br> Вашего активного ключа</div>
+            </div>
+
+            <div class="popup-small__item popup-small__item--margin-large" style="text-align: center;margin:2px;">
+                <span style="color:#33a8b9">Stihi.io не хранит Ваши ключи</span>
+            </div>
+
+            <div class="popup-small__item-btn">
+                <div class="popup-small__item-btn-center">
+                    <!-- BTN DEFAULT -->
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="auth();">войти</a>
+                    <!-- /BTN DEFAULT -->
+                    <!-- BTN SECONDARY -->
+                    <a class="btn-secondary" onClick="$.magnificPopup.close()" href="javascript:void(0)">отмена</a>
+                    <!-- /BTN SECONDARY -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END POPUP AUTH -->

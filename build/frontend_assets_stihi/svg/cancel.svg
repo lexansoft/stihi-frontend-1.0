@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <style>
+      .cls-1{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:30px}
+    </style>
+  </defs>
+  <g id="Блок">
+    <path fill="#fff" class="cls-1" d="M240.81 128A112.81 112.81 0 1 1 128 15.19 112.81 112.81 0 0 1 240.81 128zM48.81 47.66l159.51 159.52"/>
+  </g>
+</svg>

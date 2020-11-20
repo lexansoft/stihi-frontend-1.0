@@ -1,0 +1,23 @@
+<!-- COMMENTS LIST -->
+<div class="comments-list">
+  <div class="comments-list__item" *ngIf="true || returnFeed">
+      <div class="comments-list__item-header" style="color: black;">Комментарий на “<a href="javascript:void(0)" (click)="goToPost();"  class="item__name comments_link" style="text-decoration: none;margin:0px;font-weight: 700;font-size:inherit;font-family: inherit;color: black;vertical-align: baseline;display: inline!important;">{{object.title}}</a>” (<span class="comments-list__item-header-a"><a routerLink="/@{{object.user.displayNameLogin}}" class="item__name comments_link" style="font-weight: 700;font-size:inherit;font-family: inherit;color: black;vertical-align: baseline;display: inline!important;">
+              <ng-container>{{object.user.displayName}}</ng-container>
+            </a>
+
+            <div class="value" routerLink="/users/{{object.user_id}}" style="margin-left: 0px">
+              <img title="{{getUserPower(object.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(object.user.val_power, 'image')" alt="">
+              <div class="value__value2" title="Репутация">{{getUserReputation(object.user.val_reputation)}}</div>
+            </div>
+        </span>)
+      </div>
+      <div class="comments-list__item-body">
+
+      <ng-container *ngFor="let o of comments; index as i">
+          <app-comments [comments]="[o]" [current_user_votes]="current_user_votes" [votes]="comments_votes" [level]="0" [postId]="object.id" *ngIf="o.id == commentId"></app-comments>
+      </ng-container>
+
+    </div>
+  </div>
+</div>
+<!-- /COMMENTS LIST -->

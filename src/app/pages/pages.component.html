@@ -1,0 +1,25 @@
+<div id="p-about" class="popup mfp-hide modal-dialog popup--page">
+  <div class="popup__stycky-btn">
+    <button class="mfp-close popup__stycky-btn--close">×</button>
+  </div>
+
+  <div class="page modal-content">
+    <div class="page__body modal-body">
+      <div class="item3">
+        <div class="item3__header" style="text-align:center;">{{page.title}}</div>
+        <div class="item3__body">
+          <div class="item3__body-desc" style="text-align:left;margin:0px;">
+            <p class="item3__body-p">
+              <markdown [data]="page.html"></markdown>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /PRIVACY -->
+  <div class="popup__slide-top">
+    <a class="js-scroll-top page__footer-slide-top-link" href="javascript:void(0)" (click)="scrollTop()">К началу</a>
+  </div>
+</div>

@@ -1,0 +1,659 @@
+<app-users-header *ngIf="!user.ban"></app-users-header>
+
+<div class="content__row" *ngIf="user.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!user.ban">
+  <div class="content__inner">
+
+    <app-users-left-menu remove-host></app-users-left-menu>
+
+
+    <div class="content__col-large">
+      <div class="content__col-large-items-box">
+        <!-- BOX WHITE -->
+        <div class="box-white box-white--padding-20">
+          <div class="box-white__header">
+            <div class="box-white__header-tabs">
+              <!-- TABS -->
+              <div class="tabs">
+                <ul class="tabs__ul" style="display: inline-flex">
+                  <li class="tabs__li">
+                    <a href="javascript:void(0)" routerLink="/@{{login}}/wallets/balances" class="tabs__a" [ngClass]="{'tabs__a--active': tab == 'balances'}">Балансы</a>
+                  </li>
+                  <!-- *ngIf="auId == id && TODO" -->
+                  <li class="tabs__li" *ngIf="auId == id && isShowHistory">
+                    <a href="javascript:void(0)" routerLink="/@{{login}}/wallets/history" class="tabs__a" [ngClass]="{'tabs__a--active': tab == 'history'}">История</a>
+                  </li>
+                  <li class="tabs__li" *ngIf="auId == id">
+                    <a href="javascript:void(0)"  routerLink="/@{{login}}/wallets/permissions" class="tabs__a" [ngClass]="{'tabs__a--active': tab == 'permissions'}">Разрешения</a>
+                  </li>
+                  <li class="tabs__li" *ngIf="auId == id && TODO">
+                    <a href="javascript:void(0)"  routerLink="/@{{login}}/wallets/passwords"  class="tabs__a" [ngClass]="{'tabs__a--active': tab == 'passwords'}">Пароль</a>
+                  </li>
+                  <li class="tabs__li" *ngIf="auId == id && TODO">
+                    <a href="javascript:void(0)"  routerLink="/@{{login}}/wallets/invites" class="tabs__a" [ngClass]="{'tabs__a--active': tab == 'invites'}">Приглашения</a>
+                  </li>
+                </ul>
+                <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="refreshBalance()" style="display: inline-block; float: right" id="btnRefreshBalance" *ngIf="auId == id">Обновить баланс</a>
+              </div>
+              <!-- /TABS -->
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="tab == 'balances'">
+            <div class="box-white__body-item-list2">
+              <!-- ITEMS LIST2 -->
+              <div class="items-list2">
+
+                <div class="items-list2__item">
+                  <div class="items-list2__item-left">
+                    <div class="items-list2__item-title">ГОЛОС</div>
+                    <div class="items-list2__item-p" style="font-size: 14px;">Перемещаемые цифровые токены, которые могут быть переданы куда угодно в любой момент.<br>Голос может быть конвертирован в Силу Голоса, этот процесс называется “увеличение Силы Голоса”.</div>
+                  </div>
+
+                  <div class="items-list2__item-right">
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': is_show_menu_golos}">
+                      <span *ngIf="auId == id" class="simpleDropdown__target items-list2__item-span" (click)="toggleMenu('golos', !is_show_menu_golos)">{{(object.val_golos | number:'1.3-3').split(',').join('')}} GOLOS</span>
+                      <span *ngIf="auId != id" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">{{(object.val_golos | number:'1.3-3').split(',').join('')}} GOLOS</span>
+
+                      <div class="simpleDropdown__container simpleDropdown__container--right-top2">
+                        <div class="simpleDropdown__list-menu">
+                          <ul class="list-menu">
+                            <li class="list-menu__li">
+                              <a class="list-menu__a" href="javascript:void(0)" (click)="sendTokens('GOLOS')">
+                                <span class="list-menu__span">Передать</span>
+                              </a>
+                            </li>
+                            <li class="list-menu__li" *ngIf="TODO">
+                              <a class="list-menu__a" href="javascript:void(0)">
+                                <span class="list-menu__span">Перевести в сейф</span>
+                              </a>
+                            </li>
+                            <li class="list-menu__li">
+                              <a class="list-menu__a" href="javascript:void(0)" (click)="sendPower('GOLOS')">
+                                <span class="list-menu__span">Увеличить Силу Голоса</span>
+                              </a>
+                            </li>
+                            <li class="list-menu__li" *ngIf="false">
+                              <a class="list-menu__a" href="https://golos.io/market" target="_blank">
+                                <span class="list-menu__span">Купить или Продать</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="items-list2__item">
+                  <div class="items-list2__item-left">
+                    <div class="items-list2__item-title">СИЛА ГОЛОСА</div>
+                    <div class="items-list2__item-p" style="font-size: 14px;">Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном хранении.<br>Чем больше у Вас Силы Голоса, тем сильнее Вы влияете на вознаграждения за пост и тем больше зарабатываете за голосование.</div>
+                  </div>
+
+                  <div class="items-list2__item-right">
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': is_show_menu_power}">
+                      <span *ngIf="auId == id" class="simpleDropdown__target items-list2__item-span" (click)="toggleMenu('power', !is_show_menu_power)">{{(user_power_value | number:'1.3-3').split(',').join('')}} GOLOS</span>
+                      <span *ngIf="auId != id" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">{{(user_power_value | number:'1.3-3').split(',').join('')}} GOLOS</span>
+
+                      <div class="simpleDropdown__container simpleDropdown__container--right-top2">
+                        <div class="simpleDropdown__list-menu">
+                          <ul class="list-menu">
+                            <li class="list-menu__li">
+                              <a class="list-menu__a" (click)="sendPowerToGolos()">
+                                <span class="list-menu__span">Уменьшить Силу Голоса</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="items-list2__item" *ngIf="false">
+                  <div class="items-list2__item-left">
+                    <div class="items-list2__item-title">ЗОЛОТОЙ</div>
+                    <div class="items-list2__item-p" style="font-size: 14px;">Перемещаемые цифровые токены.</div>
+                  </div>
+
+                  <div class="items-list2__item-right">
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': is_show_menu_gold}">
+                      <span *ngIf="auId == id && (object.val_gold && object?.val_gold > 0)" class="simpleDropdown__target items-list2__item-span" (click)="toggleMenu('gold', !is_show_menu_gold)">{{(object?.val_gold  | number:'1.3-3').split(',').join('')}} GBG</span>
+                      <span *ngIf="auId == id && (!object.val_gold || object?.val_gold == 0)" class="simpleDropdown__target items-list2__item-span" (click)="toggleMenu('gold', !is_show_menu_gold)">{{(object?.val_gold  | number:'1.3-3')}} GBG</span>
+
+                      <span *ngIf="auId != id && (object.val_gold && object?.val_gold > 0)" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">{{(object?.val_gold  | number:'1.3-3').split(',').join('')}} GBG</span>
+                      <span *ngIf="auId != id && (!object.val_gold || object?.val_gold == 0)" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">{{(object?.val_gold  | number:'1.3-3')}} GBG</span>
+
+                      <div class="simpleDropdown__container simpleDropdown__container--right-top2">
+                        <div class="simpleDropdown__list-menu">
+                          <ul class="list-menu">
+                            <li class="list-menu__li">
+                              <a class="list-menu__a" href="javascript:void(0)" (click)="sendTokens('GBG')">
+                                <span class="list-menu__span">Передать</span>
+                              </a>
+                            </li>
+                            <li class="list-menu__li" *ngIf="false">
+                              <a class="list-menu__a" href="https://golos.io/market" target="_blank">
+                                <span class="list-menu__span">Купить или Продать</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <ng-container  *ngIf="TODO">
+	                <div class="items-list2__item">
+	                  <div class="items-list2__item-left">
+	                  </div>
+	                </div>
+
+	                <div class="items-list2__item">
+	                  <div class="items-list2__item-left">
+	                    <div class="items-list2__item-title">Оценка стоимости аккаунта</div>
+	                    <div class="items-list2__item-p" style="font-size: 14px;">Оценочная стоимость  рассчитывается  из 7-ми дневной средней стоимости Голос<span style="display:none;"> (по данным команды Голос “стоимость аккаунта считается по курсу coinmarketcap, на данный момент отображение верное - https://coinmarketcap.com/currencies/golos-gold/”)</span>.</div>
+	                  </div>
+
+	                  <div class="items-list2__item-right">
+	                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': is_show_menu_account}">
+	                      <span *ngIf="object.val_account && object.val_account > 0" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">₽ {{(object?.val_account  | number:'1.3-3').split(',').join('')}}</span>
+	                      <span *ngIf="!object.val_account || object.val_account == 0" style="white-space: nowrap;font-size: 16px;padding-right: 20px;display: inline-block;margin-bottom: 5px;margin-left: 15px;position: relative;color: #363636;">₽ {{(object?.val_account  | number:'1.3-3')}}</span>
+	                    </div>
+	                  </div>
+	                </div>                	
+                </ng-container>
+
+                <!-- /ITEMS LIST2 -->
+              </div>
+            </div>
+            <div class="box-white__items-list-footer" *ngIf="is_power_to_golos_sent" style="padding-top: 0px;padding-bottom: 6px;padding-left:0px;">
+              <div class="box-white__items-list-footer-b" style="font-weight: normal;font-size: 14px;color:black;">
+                <div class="box-white__items-list-footer-left">Вы запустили понижение Силы Голоса на {{(power_to_golos.amount | number:'1.3-3').split(',').join('')}} GOLOS ({{(power_to_golos.paid_out | number:'1.3-3').split(',').join('')}} GOLOS уже выплачено)<br>Следующее понижение Силы Голоса произойдет 
+
+                <div class="controls__price simpleDropdown simpleDropdown--show">
+                <span class="simpleDropdown__target" (mouseenter)="showPaymentTooltip = true" (mouseleave)="showPaymentTooltip = false">
+                  <b class="tooltipWallet">через {{power_to_golos.days}} <ng-container *ngIf="power_to_golos.days == 0 || power_to_golos.days >= 5">дней</ng-container><ng-container *ngIf="power_to_golos.days == 1">день</ng-container><ng-container *ngIf="power_to_golos.days >= 2 && power_to_golos.days <= 4">дня</ng-container></b>                  
+                </span>
+                <div class="simpleDropdown__container" *ngIf="showPaymentTooltip">
+                {{power_to_golos.date}}
+                </div>
+                </div>
+
+                </div>
+                <a href="#" class="box-white__items-list-footer-right">
+                  <span class="box-white__items-footer-text"><a href="javascript: void(0)" class="post__name" (click)="cancelGolosToPower()" style="font-weight: normal;text-decoration: underline;font-size: 14px;">Остановить</a></span>
+                </a>
+              </div>
+            </div>
+            <div class="box-white__items-list-footer" style="padding-left:0px;">
+              <p class="box-white__items-list-footer-p" style="color:#959297">Команда Stihi.io не несет ответственности за операции <span (click)="isShowHistory = true">пользователей</span> по обмену/покупке/продаже цифровых токенов. Все операции по обмену/покупке/продаже цифровых токенов пользователи совершают самостоятельно.<br>Токены GOLOS торгуются на  <a href="https://kuna.io/markets/golgbg" target="_blank" style="color: #959297" class="muted_link">kuna.io</a>.</p>
+              <div class="box-white__items-list-footer-b" style="font-size:14px">
+                <div class="box-white__items-list-footer-left">Прежде чем совершить покупку продажу, уточните курс</div>
+                <a href="#" class="box-white__items-list-footer-right">
+                  <span class="box-white__items-footer-text"><a href="http://bloc-post.ru/golos/" target="_blank" class="post__name">Сервис обмена токенов Red Hat</a></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="tab == 'history'">
+            <div class="box-white__body-history-items">
+              <!-- ITEMS TABLE -->
+              <div class="history-items">
+                <table class="history-items__table">
+                  <tbody>
+                  <tr class="history-items__tr" *ngFor="let o of history">
+                    <td class="history-items__td history-items__td--nowrap"><!--{{o.time_ago}} назад-->{{o.time | normalizeDate | date:'yyyy-LL-dd HH:mm'}}</td>
+                    <td class="history-items__td history-items__td--nowrap">{{o.transaction_type}} {{o.transaction_amount}} {{o.transaction_currency}} 
+                      <span *ngIf="o.from_user && o.from_user.length > 0 && o.from_user == login">пользователю <a routerLink="/@{{o.to_user}}" class="history-items__name">{{o.to_user}}</a></span>
+                      <span *ngIf="o.to_user && o.to_user.length > 0 && o.to_user == login">от <a routerLink="/@{{o.from_user}}" class="history-items__name">{{o.from_user}}</a></span>
+                    </td>
+                    <td class="history-items__td" style="width: 100%">
+                      <p class="history-items__p" style="font-size: 14px;" *ngIf="o.comment">{{o.comment}}</p>
+                    </td>
+                  </tr>
+                  </tbody></table>
+              </div>
+              <!-- /ITEMS ITEMS -->
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="tab == 'permissions'">
+            <!-- ITEMS QR -->
+            <br>
+            <p class="items-qr__item-p" style="font-size: 14px;">Важно сохранить свой ключ-пароль. Stihi.io не хранит ваши пароли. Убедитесь, что надежно сохранили ваши ключи.</p>
+            <div class="items-qr">
+              <div class="items-qr__item" *ngIf="object && object.keys.posting">
+                <div class="items-qr__item-left" style="padding-right:0px!important;width:100%!important">
+                  <div class="items-list2__item-title">Постинг ключ</div>
+                  <div class="items-qr__item-data key-data-column" *ngIf="!is_show_private_key_posting">
+                    <img (click)="openQR(object.keys.posting, 'Публичный постинг ключ')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{object.keys.posting}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{object.keys.posting}}</span>
+                  </div>
+
+                  <div class="items-qr__item-data key-data-column" *ngIf="is_show_private_key_posting">
+                    <img (click)="openQR(keys.posting, 'Приватный постинг ключ')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{keys.posting}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{keys.posting}}</span>
+                  </div>
+
+                  <p class="items-qr__item-p key-data-column" style="font-size: 14px;">Постинг ключ используется для постинга и голосования. Он должен отличаться от активного ключа и ключа владельца.</p>
+                </div>
+
+                  <div class="items-qr__item-right">
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="!secret.is_auth" (click)="showAuth()">Авторизуйтесь для этой транзакции</a>
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && !is_show_private_key_posting" (click)="is_show_private_key_posting = !is_show_private_key_posting">Показать приватный ключ</a>
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && is_show_private_key_posting" (click)="is_show_private_key_posting = !is_show_private_key_posting">Cкрыть приватный ключ</a>
+                  </div>
+
+              </div>
+              <div class="items-qr__item" *ngIf="object && object.keys.active">
+                <div class="items-qr__item-left" style="padding-right:0px!important;width:100%!important">
+                  <div class="items-list2__item-title">активный ключ</div>
+                  <div class="items-qr__item-data key-data-column" *ngIf="!is_show_private_key_active">
+                    <img (click)="openQR(object.keys.active, 'Публичный активный ключ')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{object.keys.active}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{object.keys.active}}</span>
+                  </div>
+
+                  <div class="items-qr__item-data key-data-column" *ngIf="is_show_private_key_active">
+                    <img (click)="openQR(keys.active, 'Приватный активный ключ')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{keys.active}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{keys.active}}</span>
+                  </div>
+
+                  <p class="items-qr__item-p key-data-column" style="font-size: 14px;">Активный ключ используется для переводов и размещения заказов на внутреннем рынке.</p>
+
+                </div>
+
+              <div class="items-qr__item-right">
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="!secret.is_auth" (click)="showAuth()">Авторизуйтесь для этой транзакции</a>
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && !is_show_private_key_active" (click)="is_show_private_key_active = !is_show_private_key_active">Показать приватный ключ</a>
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && is_show_private_key_active" (click)="is_show_private_key_active = !is_show_private_key_active">Cкрыть приватный ключ</a>
+              </div>
+
+              </div>
+              <div class="items-qr__item" *ngIf="object && object.keys.owner">
+                <div class="items-qr__item-left" style="padding-right:0px!important;width:100%!important">
+                  <div class="items-list2__item-title">ключ владельца</div>
+                  <div class="items-qr__item-data key-data-column" *ngIf="!is_show_private_key_owner">
+                    <img (click)="openQR(object.keys.owner, 'Публичный ключ владельца')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{object.keys.owner}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{object.keys.owner}}</span>
+                  </div>
+
+                  <div class="items-qr__item-data key-data-column" *ngIf="is_show_private_key_owner">
+                    <img (click)="openQR(keys.owner, 'Приватный ключ владельца')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{keys.owner}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{keys.owner}}</span>
+                  </div>
+
+                  <p class="items-qr__item-p key-data-column" style="font-size: 14px;">Ключ владельца это главный ключ ко всему аккаунта, он необходим для изменения других ключей.<br>Приватный ключ или пароль должен храниться в оффлайне насколько это возможно.</p>
+
+                </div>
+
+              <div class="items-qr__item-right">
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="true" style="opacity:0;cursor:default;">Авторизуйтесь для этой транзакции</a>
+
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="false && !secret.is_auth" (click)="showAuth()">Авторизуйтесь для этой транзакции</a>
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="false && secret.is_auth && !is_show_private_key_owner" (click)="is_show_private_key_owner = !is_show_private_key_owner">Показать приватный ключ</a>
+                <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="false && secret.is_auth && is_show_private_key_owner" (click)="is_show_private_key_owner = !is_show_private_key_owner">Скрыть приватный ключ</a>
+              </div>
+
+              </div>
+              <div class="items-qr__item" *ngIf="object && object.keys.memo && false">
+                <div class="items-qr__item-left" style="padding-right:0px!important;width:100%!important">
+                  <div class="items-list2__item-title">ключ заметок</div>
+                  <div class="items-qr__item-data key-data-column" *ngIf="!is_show_private_key_memo">
+                    <img (click)="openQR(object.keys.memo, 'Публичный ключ заметок')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{object.keys.memo}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{object.memo}}</span>
+                  </div>
+
+                  <div class="items-qr__item-data key-data-column" *ngIf="is_show_private_key_memo">
+                    <img (click)="openQR(keys.memo, 'Приватный ключ заметок')" class="items-qr__item-img" src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{keys.memo}}&qzone=1&margin=0&size=32x32&ecc=L" alt="" style="width:32px!important;height:32px!important">
+                    <span class="items-qr__item-key">{{keys.memo}}</span>
+                  </div>
+
+                  <p class="items-qr__item-p key-data-column" style="font-size: 14px;">Ключ заметок используется для создания и чтения заметок.</p>
+
+                </div>
+
+                <div class="items-qr__item-right">
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="!secret.is_auth" (click)="showAuth()">Авторизуйтесь для этой транзакции</a>
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && !is_show_private_key_memo" (click)="is_show_private_key_memo = !is_show_private_key_memo">Показать приватный ключ</a>
+                    <a href="javascript:void(0)" class="items-qr__item-a" *ngIf="secret.is_auth && is_show_private_key_memo" (click)="is_show_private_key_memo = !is_show_private_key_memo">Скрыть приватный ключ</a>                	
+                </div>
+
+              </div>
+            </div>
+            <!-- ITEMS QR -->
+          </div>
+
+          <div class="box-white__body" *ngIf="tab == 'passwords'">
+            <div class="box-white__body-pass">
+              <p>Встатвить</p>
+              <p>текст</p>
+              <!-- BTN DEFAULT -->
+              <a class="btn-default btn-default--small" href="#">восстановить аккаунт</a>
+              <!-- /BTN DEFAULT -->
+            </div>
+          </div>
+
+
+
+          <!-- /BOX WHITE -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- POPUP AUTH -->
+<div id="p-auth" class="popup-small mfp-hide">
+  <form (submit)="auth()" autocomplete="off">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">Авторизуйтесь, чтобы завершить  действие</div>
+  </div>
+  <div class="popup-small__body">
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-send-input">
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input value="" class="send-input__send" type="text" placeholder="логин" name="secret_login" autocomplete="off" [(ngModel)]="secret.login">
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+      </div>
+      <div class="popup-small__item">
+        <!-- INPUT -->
+        <div class="input">
+          <input class="input__input" type="text" placeholder="Ключ" name="secret_key" autocomplete="off" [(ngModel)]="secret.key" style="font-size: 13px!important">
+        </div>
+        <!-- /INPUT -->
+        <div class="popup-small__item-desc">Эта операция требует ввода Вашего ключа владельца или ввода
+          <br> Вашего активного ключа</div>
+      </div>
+
+      <div class="popup-small__item popup-small__item--margin-large" style="text-align: center;margin:2px;">
+        <span style="color:#33a8b9">Stihi.io не хранит Ваши ключи</span>
+      </div>
+
+      <div class="popup-small__item-btn">
+        <div class="popup-small__item-btn-center">
+          <!-- BTN DEFAULT -->
+          <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="auth();">Подтвердить</a>
+          <!-- /BTN DEFAULT -->
+          <!-- BTN SECONDARY -->
+          <!--
+          <a class="btn-secondary" onClick="$.magnificPopup.close()" href="javascript:void(0)">отмена</a>
+          -->
+          <!-- /BTN SECONDARY -->
+        </div>
+      </div>
+  </div>
+  </form>
+</div>
+<!-- END POPUP AUTH -->
+
+<!-- POPUP SEND // -->
+<div id="p-send-tokens" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">Передать пользователю</div>
+  </div>
+  <div class="popup-small__body">
+    <div class="popup-small__item">
+      <div class="popup-small__body-desc">Отправить средства на другой счет.</div>
+    </div>
+    <form action="" (submit)="submitSendTokensForm()">
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">от</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input disabled value="{{authUserLogin}}" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT // -->
+          </div>
+        </div>
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">к</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input placeholder="Отправить аккаунту" name="tokens_recipient" (keyup)="getRecipientId();" [(ngModel)]="sendTokensForm.recipient" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">&nbsp;</span>
+          <div class="popup-small__item-input-wrap" style="padding: 0px!important;">
+            <!-- SEND INPUT -->
+            <div>
+              <span class="" style="color:rgb(59, 54, 61)!important;font-family:Roboto, sans-serif;">ID:</span>
+              <span class="" style="color:rgb(59, 54, 61)!important;font-family:Roboto, sans-serif;">{{recipientId}}</span>
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+      </div>
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-field-changer">
+          <div class="popup-small__item-field-changer-left">Количество</div>
+          <div class="popup-small__item-elem-wrap">
+            <!-- FIELD CHANGER -->
+            <div class="field-changer">
+              <input placeholder="Количество" class="field-changer__input" type="text" name="tokens_amount" [(ngModel)]="sendTokensForm.amount" (keyup)="formatAmountInput('sendTokensForm')">
+              <div class="field-changer__select-input">
+                <select class="field-changer__select" name="tokens_currency" [(ngModel)]="sendTokensForm.currency">
+                  <option value="GOLOS">GOLOS</option>
+                  <option *ngIf="false" value="GBG">GBG</option>
+                </select>
+              </div>
+            </div>
+            <!-- /FIELD CHANGE -->
+            <div class="popup-small__body-green" *ngIf="sendTokensForm.currency == 'GOLOS'">Баланс: {{(object.val_golos | number:'1.3-3').split(',').join('')}} GOLOS</div>
+            <div class="popup-small__body-green" *ngIf="sendTokensForm.currency == 'GBG'">Баланс: {{(object.val_gold | number:'1.3-3').split(',').join('')}} GBG</div>
+            <div class="popup-small__body-red" *ngIf="false">Обязательно</div>
+          </div>
+        </div>
+        <div class="popup-small__item-input-outer">
+          <div class="popup-small__item-input-left">Заметка</div>
+          <div class="popup-small__item-input-wrap">
+            <div class="popup-small__item-input-label" style="color:red;padding-bottom: 5px;" *ngIf="isInvalidAmountSendTokensForm">Сумма должна быть в формате 99999.999</div>
+            <div class="popup-small__item-input-label">Эта заметка является публичной</div>
+            <div class="popup-small__item-elem-wrap">
+              <!-- INPUT -->
+              <div class="input">
+                <input class="input__input" placeholder="Вы можете оставить комментарий " type="text" name="tokens_note" [(ngModel)]="sendTokensForm.note">
+              </div>
+              <!-- /INPUT -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup-small__item-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="submitSendTokensForm()">Передать</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </form>
+  </div>
+</div>
+<!-- END POPUP SEND -->
+
+<!-- POPUP SEND // -->
+<div id="p-send-power" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">Перевести в Силу Голоса</div>
+  </div>
+  <div class="popup-small__body">
+    <div class="popup-small__item">
+      <div class="popup-small__body-desc" style="font-size:14px">Переведите токены Голоса в Силу Голоса, чтобы увеличить свой вес при голосовании за посты, комментарии и делегатов.</div>
+    </div>
+    <form action="" (submit)="submitSendPowerForm()">
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">от</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input disabled value="{{authUserLogin}}" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT // -->
+          </div>
+        </div>
+        <div class="popup-small__item-send-input" *ngIf="power_to">
+          <span class="popup-small__item-send-left">к</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input placeholder="Отправить аккаунту" name="tokens_recipient_power" (keyup)="getRecipientId2();" [(ngModel)]="sendPowerForm.recipient" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+        <div class="popup-small__item-send-input" *ngIf="power_to">
+          <span class="popup-small__item-send-left">&nbsp;</span>
+          <div class="popup-small__item-input-wrap" style="padding: 0px!important;">
+            <!-- SEND INPUT -->
+            <div>
+              <span class="" style="color:rgb(59, 54, 61)!important;font-family:Roboto, sans-serif;">ID:</span>
+              <span class="" style="color:rgb(59, 54, 61)!important;font-family:Roboto, sans-serif;">{{recipientId2}}</span>
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+
+      </div>
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-field-changer">
+          <div class="popup-small__item-field-changer-left" style="width:100px">Количество</div>
+          <div class="popup-small__item-elem-wrap">
+            <!-- FIELD CHANGER -->
+            <div class="field-changer">
+              <input placeholder="Количество" class="field-changer__input" type="text"  name="tokens_amount_power" [(ngModel)]="sendPowerForm.amount" (keyup)="formatAmountInput('sendPowerForm')">
+            </div>
+          </div>
+        </div>
+        <div class="popup-small__item-field-changer">
+          <div class="popup-small__item-field-changer-left" style="width:100px"></div>
+          <div class="popup-small__item-elem-wrap">
+            <!-- /FIELD CHANGE -->
+            <div class="popup-small__body-green">Баланс: {{(object.val_golos | number:'1.3-3').split(',').join('')}} GOLOS</div>
+            <div class="popup-small__item-input-label" style="color:red;padding-top: 5px;" *ngIf="isInvalidAmountSendPowerForm">Сумма должна быть в формате 99999.999</div>
+            <div class="popup-small__body-red" *ngIf="false">Обязательно</div>
+          </div>
+        </div>
+      </div>
+      <div class="checkbox">
+        <input class="checkbox__input" type="checkbox" value="0" id="checkbox1follow" [(ngModel)]="power_to" name="send_power_to">
+        <label for="checkbox1follow">Перевести на другой аккаунт</label>
+      </div>
+      <div class="popup-small__item-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="submitSendPowerForm()">Увеличить Силу голоса</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </form>
+  </div>
+</div>
+<!-- END POPUP SEND -->
+
+<div id="p-qr-preview" class="popup-small mfp-hide" style="text-align: center;">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">{{qr_preview.title}}</div>
+  </div>
+  <div class="popup-small__body">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data={{qr_preview.key}}&qzone=1&margin=0&size=300x300&ecc=L" alt="">
+  </div>
+</div>
+
+<div id="p-send-power-to-golos" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">Уменьшить Силу Голоса</div>
+  </div>
+  <div class="popup-small__body">
+    <div class="popup-small__item">
+      <div class="popup-small__body-desc" style="font-size:14px">Уменьшая Силу Голоса, Вы уменьшаете Ваш вес  при голосовании. Конвертация из Силы Голоса в токены Голоса занимает 13 недель.
+      </div>
+    </div>
+    <form action="" (submit)="submitSendPowerForm()">
+      <!--
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">от</span>
+          <div class="popup-small__item-input-wrap">
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input disabled value="{{login}}" class="send-input__send" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="popup-small__item-send-input" *ngIf="power_to">
+          <span class="popup-small__item-send-left">к</span>
+          <div class="popup-small__item-input-wrap">
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input placeholder="Отправить аккаунту" name="tokens_recipient_power" [(ngModel)]="sendPowerForm.recipient" class="send-input__send" type="text">
+            </div>
+          </div>
+        </div>
+      </div>
+      -->
+      <div class="popup-small__item popup-small__item--table" style="margin-top: 25px">
+        <div class="popup-small__item-field-changer">
+          <div class="popup-small__item-field-changer-left" style="width:100px">Количество</div>
+          <div class="popup-small__item-elem-wrap">
+            <!-- FIELD CHANGER -->
+            <div class="field-changer">
+              <input placeholder="доступно {{(user_power_value | number:'1.3-3').split(',').join('')}}" class="field-changer__input" type="text" name="tokens_amount_send_power_to" [(ngModel)]="sendPowerToGolosForm.amount" (change)="updateSliderPercentage()" (keyup)="formatAmountInput('sendPowerToGolosForm')">
+              <div class="field-changer__select-input">
+                <select class="field-changer__select" name="tokens_currency_send_power_to" [(ngModel)]="sendPowerToGolosForm.currency">
+                  <option value="GOLOS">GOLOS</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="popup-small__item-field-changer" *ngIf="isInvalidAmountSendPowerToGolosForm">
+              <div class="popup-small__item-elem-wrap">
+                <!-- /FIELD CHANGE -->
+                <div class="popup-small__item-input-label" style="color:red;padding-top: 10px;">Сумма должна быть в формате 99999.999</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="popup-small__item" style="margin-top: 25px" *ngIf="user_power_value > 0">
+          <div class="" id="ui_slider_send_power_to_golos"></div>
+      </div>
+
+      <div class="popup-small__item" style="margin-top: 25px">
+        <div class="popup-small__body-desc" style="font-size:14px" *ngIf="(!sendPowerToGolosForm.amount || (''+sendPowerToGolosForm.amount).length == 0) && sendPowerToGolosForm.amount != 0">Выплаты составят примерно {{((user_power_value / 13)  | number:'1.3-3').split(',').join('')}} GOLOS в неделю.
+        </div>
+
+        <div class="popup-small__body-desc" style="font-size:14px" *ngIf="sendPowerToGolosForm.amount || sendPowerToGolosForm.amount == 0">Выплаты составят примерно {{((sendPowerToGolosForm.amount / 13)  | number:'1.3-3').split(',').join('')}} GOLOS в неделю.
+        </div>
+      </div>
+      <div class="popup-small__item-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="submitSendPowerToGolosForm()">Уменьшить Силу Голоса</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </form>
+  </div>
+</div>

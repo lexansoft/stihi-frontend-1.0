@@ -1,0 +1,222 @@
+<div class="content__body">
+  <!-- BOX WHITE -->
+  <div class="box-white box-white--padding">
+    <div class="box-white__header">
+      <div class="box-white__header-tabs">
+        <!-- TABS -->
+        <div class="tabs">
+          <ul class="tabs__ul">
+            <li class="tabs__li">
+              <a routerLink="/admin/users" class="tabs__a" routerLinkActive="tabs__a--active">Пользователи</a>
+            </li>
+            <li class="tabs__li">
+              <a routerLink="/admin/posts" class="tabs__a" routerLinkActive="tabs__a--active">Произведения</a>
+            </li>
+            <li class="tabs__li">
+              <a routerLink="/admin/documents" class="tabs__a" routerLinkActive="tabs__a--active">Документы</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /TABS -->
+      </div>
+    </div>
+
+    <div class="box-white__body" *ngIf="type == 'users' && objectId == 0">
+      <div class="box-white__body-top">
+        <div class="box-white__body-top-filter-field">
+          <!-- FILTER FIELD -->
+          <div class="filter-field">
+            <input class="filter-field__input" placeholder="Фильтр..." type="text" [(ngModel)]="filter">
+            <button class="filter-field__btn">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <g>
+                  <path class="filter-field__cls-1" d="M157.68 132.5h-56.51L11.18 17h236.5l-90 115.5zM157.68 132.5V211l-56.51 28.33V132.5"></path>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <!-- /FILTER FIELD -->
+        </div>
+      </div>
+      <div class="box-white__body-bottom">
+        <div class="box-white__body-bottom-user-list">
+          <!-- USER AVATAR LIST -->
+          <div class="user-avatar-list user-avatar-list--center">
+
+            <div class="user-avatar-list__col" *ngFor="let z of [0, 1]">
+              <div class="user-avatar-list__table">
+                <ng-container *ngFor="let o of objects | filter:'users':filter; index as i">
+                  <div class="user-avatar-list__tr" *ngIf="o.column == z">
+                    <div class="user-avatar-list__cell">
+                      <!-- AVATAR -->
+                      <div class="avatar avatar--avatar-img-max-width31">
+                        <img class="avatar__avatar" src="{{o.avatar}}" alt="">
+                        <div class="avatar__user-right avatar__user-right--flex">
+                          <a routerLink="/@{{o.displayNameBlog}}" class="avatar__avatar-name avatar__avatar-name--size-medium">
+                            <ng-container *ngIf="true">{{o.displayName}}</ng-container>
+                          </a>
+                          <!-- VALUE -->
+                          <div class="value">
+                            <img title="{{getUserPower(o.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o.val_power, 'image')" alt="">
+                            <div class="value__value2" title="Репутация">{{getUserReputation(o.val_reputation)}}</div>
+                          </div>
+                          <!-- /VALUE -->
+                        </div>
+                      </div>
+                      <!-- /AVATAR -->
+                    </div>
+                    <div class="user-avatar-list__cell">
+                      <div class="user-avatar-list__btn">
+                        <!-- BTN SECONDARY -->
+                        <a class="btn-secondary btn-secondary--small btn-secondary--active" href="javascript:void(0)" (click)="blockUser(o)" *ngIf="o.ban">Разблокировать</a>
+                        <a class="btn-secondary btn-secondary--small btn-secondary--active" href="javascript:void(0)" (click)="blockUser(o)" *ngIf="!o.ban">Заблокировать</a>
+                        <!-- /BTN SECONDARY -->
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+
+          </div>
+          <!-- /USER AVATAR LIST -->
+        </div>
+      </div>
+    </div>
+
+    <div class="box-white__body" *ngIf="type == 'posts' && objectId == 0">
+      <div class="box-white__body-top">
+        <div class="box-white__body-top-filter-field">
+          <!-- FILTER FIELD -->
+          <div class="filter-field">
+            <input class="filter-field__input" placeholder="Фильтр..." type="text" [(ngModel)]="filter">
+            <button class="filter-field__btn">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <g>
+                  <path class="filter-field__cls-1" d="M157.68 132.5h-56.51L11.18 17h236.5l-90 115.5zM157.68 132.5V211l-56.51 28.33V132.5"></path>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <!-- /FILTER FIELD -->
+        </div>
+      </div>
+
+      <div class="box-white__body-bottom">
+        <div class="box-white__body-bottom-works">
+          <!-- WORKS LIST -->
+          <div class="works-list">
+
+            <div class="works-list__item" *ngFor="let o of objects | filter:'posts':filter; index as i">
+              <div class="works-list__item-text">
+                <h4 class="works-list__h4" routerLink="/posts/{{o.id}}" [queryParams]="{return: '/admin/posts'}">{{o.title}}</h4>
+                <markdown [data]="o.body"></markdown>
+              </div>
+              <div class="works-list__item-btn">
+                <!-- BTN SECONDARY -->
+                <a class="btn-secondary btn-secondary--small btn-secondary--active" href="javascript:void(0)" (click)="blockPost(o);" *ngIf="o.ban">Разблокировать</a>
+                <a class="btn-secondary btn-secondary--small btn-secondary--active" href="javascript:void(0)" (click)="blockPost(o);" *ngIf="!o.ban">Заблокировать</a>
+                <!-- /BTN SECONDARY -->
+              </div>
+            </div>
+
+          </div>
+          <!-- /WORKS LIST -->
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="box-white__body" *ngIf="type == 'documents' && objectId == 0">
+      <div class="box-white__body-bottom">
+        <div class="box-white__body-top">
+          <div class="box-white__box-title">
+            <b>Управление документами</b>
+          </div>
+        </div>
+        <div class="box-white__body-middle">
+          <div class="box-white__box-btn">
+            <!-- BTN DEFAULT -->
+            <a class="btn-default btn-default--small" routerLink="/admin/documents/-1">создать документ</a>
+            <!-- /BTN DEFAULT -->
+          </div>
+        </div>
+        <!-- CONTROL LIST -->
+        <div class="control-list">
+
+          <div class="control-list__item" *ngFor="let o of objects; index as i">
+            <div class="control-list__item-left">
+              <div class="control-list__item-title">{{o.title}}</div>
+            </div>
+            <div class="control-list__item-right">
+              <div class="control-list__item-btns">
+                <!-- BTN DEFAULT -->
+                <a class="btn-default btn-default--small" routerLink="/admin/documents/{{o.id}}">редактировать</a>
+                <!-- /BTN DEFAULT -->
+                <!-- BTN SECONDARY -->
+                <a class="btn-secondary btn-secondary--small btn-default--min-width-150" href="javascript:void(0)" (click)="deleteDocument(o);">удалить</a>
+                <!-- /BTN SECONDARY -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /CONTROL LIST -->
+      </div>
+    </div>
+
+    <div class="box-white__body" *ngIf="type == 'documents' && objectId != 0">
+      <div class="box-white__body-bottom">
+        <div class="box-white__body-top">
+          <div class="box-white__box-title">
+            <b>Редактирование документа</b>
+          </div>
+        </div>
+        <div class="box-white__body-form3">
+          <!-- FORM 3 -->
+          <div class="form3">
+            <form class="form3__form" (submit)="saveDocument()">
+              <div class="form3__item">
+                <!-- INPUT -->
+                <div class="input">
+                  <input class="input__input" placeholder="Код документа" type="text" [(ngModel)]="object.code" name="document_code">
+                </div>
+                <!-- /INPUT -->
+              </div>
+              <div class="form3__item">
+                <!-- INPUT -->
+                <div class="input">
+                  <input class="input__input" placeholder="Заголовок документа" type="text" [(ngModel)]="object.title" name="document_title">
+                </div>
+                <!-- /INPUT -->
+              </div>
+              <div class="form3__item">
+                <!-- TEXTAREA -->
+                <div class="textarea">
+                  <!--
+                  <ckeditor debounce="500" [(ngModel)]="object.html" name="document_body">
+                  </ckeditor>
+                  -->
+                </div>
+                <!-- /TEXTAREA -->
+              </div>
+              <div class="form3__btns">
+                <!-- BTN DEFAULT -->
+                <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="saveDocument();">сохранить</a>
+                <!-- /BTN DEFAULT -->
+                <!-- BTN SECONDARY -->
+                <a oclass="btn-secondary btn-secondary--small btn-default--min-width-150" routerLink="/admin/documents">отмена</a>
+                <!-- /BTN SECONDARY -->
+              </div>
+            </form>
+          </div>
+          <!-- /FORM 3 -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /BOX WHITE -->
+</div>

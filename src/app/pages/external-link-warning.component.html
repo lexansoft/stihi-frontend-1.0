@@ -1,0 +1,30 @@
+<div class="content__body">
+  <form>
+  <!-- BOX WHITE -->
+  <div class="box-white box-white--padding">
+    <!--
+    <div class="content__header">
+      <h1 class="h1 h1--content-header">
+        <ng-container class="h1" *ngIf="object.content.id == 0">Публикация нового произведения</ng-container>
+        <ng-container class="h1" *ngIf="object.content.id > 0">Редактирование произведения</ng-container>
+      </h1>
+    </div>
+    -->
+    <div class="box-white__form">
+<h2>Вы покидаете <a href="https://stihi.io" target="_blank">Stihi.io</a></h2>
+Вы нажали внешнюю ссылку <b class="outgoing_link">{{targetLink}}</b>, размещенную одним из авторов.
+<br><br>
+<b>Stihi.io</b> не имеет никакого отношения к сайту, расположенному по ссылке выше, и не может гарантировать Вам безопасность его использования.<br>
+Некоторые сайты могут содержать вирусы, использовать мошеннические схемы. Если у Вас нет серьезных оснований для доверия внешнему ресурсу,  рекомендуем Вам отказаться от перехода по ссылке.
+<br><br>
+Помните, что  активный ключ Вашего аккаунта на <b>Stihi.io</b> не может быть восстановлен, а доступ к нему позволит мошенникам завладеть всеми Вашими средствами.<br>
+<br>
+<ul>
+<li><a [href]="targetLink" target="_blank" class="ck-link_selected outgoing_link_a">Перейти по ссылке <b>{{targetLink}}</b></a></li>
+<li style="padding-top: 10px"><a href="javascript:void(0)" (click)="backClicked()">Отказаться от перехода и <b>вернуться назад</b></a></li>
+</ul>
+    </div>
+  </div>
+    <!-- /BOX WHITE -->
+  </form>
+</div>

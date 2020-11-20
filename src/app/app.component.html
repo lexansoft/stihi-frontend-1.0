@@ -1,0 +1,176 @@
+<app-header></app-header>
+
+<main class="content">
+  <div class="container">
+
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+
+<div (click)="scrollTop();" class="scroll_button_container"><div role="button" aria-label="Вверх" data-tooltip="Вверх" class="gnVUwB">&uarr;</div></div>
+
+</main>
+
+<router-outlet name="popup"></router-outlet>
+
+<!-- POPUP SEND // -->
+<div id="p-send" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2">Передать пользователю</div>
+  </div>
+  <div class="popup-small__body">
+    <div class="popup-small__item">
+      <div class="popup-small__body-desc">Отправить средства на другой счет.</div>
+    </div>
+    <form action="">
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">от</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input disabled value="anela" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT // -->
+          </div>
+        </div>
+        <div class="popup-small__item-send-input">
+          <span class="popup-small__item-send-left">к</span>
+          <div class="popup-small__item-input-wrap">
+            <!-- SEND INPUT -->
+            <div class="send-input">
+              <span class="send-input__left">@</span>
+              <input placeholder="Отправить аккаунту" class="send-input__send" type="text">
+            </div>
+            <!-- /SEND INPUT -->
+          </div>
+        </div>
+      </div>
+      <div class="popup-small__item popup-small__item--table">
+        <div class="popup-small__item-field-changer">
+          <div class="popup-small__item-field-changer-left">Количество</div>
+          <div class="popup-small__item-elem-wrap">
+            <!-- FIELD CHANGER -->
+            <div class="field-changer">
+              <input placeholder="Количество" class="field-changer__input" type="text">
+              <div class="field-changer__select-input">
+                <select class="field-changer__select">
+                  <option>Голос</option>
+                  <option>Голос</option>
+                  <option>Голос</option>
+                </select>
+              </div>
+            </div>
+            <!-- /FIELD CHANGE -->
+            <div class="popup-small__body-green">Баланс: 1506 GOLOS</div>
+            <div class="popup-small__body-red">Обязательно</div>
+          </div>
+        </div>
+        <div class="popup-small__item-input-outer">
+          <div class="popup-small__item-input-left">Заметка</div>
+          <div class="popup-small__item-input-wrap">
+            <div class="popup-small__item-input-label">Эта заметка является публичной</div>
+            <div class="popup-small__item-elem-wrap">
+              <!-- INPUT -->
+              <div class="input">
+                <input class="input__input" placeholder="Вы можете оставить комментарий " type="text">
+              </div>
+              <!-- /INPUT -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup-small__item-btn">
+        <!-- BTN DEFAULT -->
+        <a class="btn-default btn-default--small" href="#">Передать</a>
+        <!-- /BTN DEFAULT -->
+      </div>
+    </form>
+  </div>
+</div>
+<!-- END POPUP SEND -->
+
+<div id="p-page" class="popup mfp-hide modal-dialog popup--page">
+  <app-posts-detail></app-posts-detail>
+</div>
+
+<!-- POPUP COMMENTS -->
+<div id="p-comments" class="popup modal-dialog mfp-hide">
+  <app-comments-detail></app-comments-detail>
+</div>
+<!-- POPUP COMMENTS -->
+
+<!-- MENU -->
+<nav class="mmenu" id="menu">
+  <div class="mmenu__wrap">
+    <button class="js-menu-btn-close menu-btn-close" id="rightMenuCloseButton"></button>
+    <!-- MENU -->
+    <nav class="menu">
+      <ul class="menu__ul">
+        <li class="menu__li">
+          <a href="https://wiki.golos.io/1-introduction/welcome.html#%D0%B4%D0%BE%D0%B1%D1%80%D0%BE-%D0%BF%D0%BE%D0%B6%D0%B0%D0%BB%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-%D0%BD%D0%B0-%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D1%83-%D0%B3%D0%BE%D0%BB%D0%BE%D1%81" target="_blank" class="menu__a">Добро пожаловать</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://wiki.golos.io/" target="_blank" class="menu__a">Вики</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://golos.io/market" target="_blank" class="menu__a">Внутренний рынок (биржа)</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://golos.io/~witnesses" target="_blank" class="menu__a">Проголосовать за делегатов</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://golos.io/@goloscore" target="_blank" class="menu__a">Новости GOLOS</a>
+        </li>
+        <li class="menu__li">
+          <a href="http://golostools.com/" target="_blank" class="menu__a">Центр приложений GOLOS</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://t.me/stihi_io_support" target="_blank" class="menu__a">Помощь</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://www.facebook.com/www.stihi.io/" target="_blank" class="menu__a">Мы в ФБ</a>
+        </li>
+        <li class="menu__li">
+          <a href="https://vk.com/stihi_io" target="_blank" class="menu__a">Мы в ВК</a>
+        </li>
+        <li class="menu__li">
+          <a [routerLink]="['', {outlets: { popup: 'pages/about' } } ]" class="menu__a">О портале Stihi.io</a>
+        </li>
+        <li class="menu__li">
+          <a [routerLink]="['', {outlets: { popup: 'pages/tos' } } ]" class="menu__a">Пользовательское соглашение</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /MENU -->
+  </div>
+</nav>
+<!-- /MENU -->
+
+<div id="p-announce-button" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2"></div>
+  </div>
+  <div class="popup-small__body">
+    <p class="item3__body-p">
+      Вы можете анонсировать любое произведение, опубликованное на портале Stihi.io: свое или другого автора.
+      <br><br>
+      Кнопка анонсирования находится на странице произведения.
+      <br>
+    </p>
+  </div>
+</div>
+
+<div id="p-invite-button" class="popup-small mfp-hide">
+  <div class="popup-small__header2">
+    <div class="popup-small__title2"></div>
+  </div>
+  <div class="popup-small__body">
+    <p class="item3__body-p">
+      Вы можете пригласить  читателей не  только в свой блог, но и в блог любого автора Stihi.io.
+      <br><br>
+      Кнопка приглашения находится в авторском блоге.
+      <br>
+    </p>
+  </div>
+</div>

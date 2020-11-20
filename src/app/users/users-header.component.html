@@ -1,0 +1,101 @@
+<div class="content__user-banner">
+  <!-- USER BANNER -->
+  <div class="user-banner">
+    <div class="user-banner__top">
+      <div *ngIf="!isLoading && object.background_image && object.background_image.length > 5" [style.backgroundImage]="'url('+ object.background_image +')'" class="user-banner__background"></div>
+      <div *ngIf="!isLoading && !object.background_image || object.background_image.length < 5"  [style.backgroundImage]="'url(/frontend_assets_stihi/img/banner.jpg)'" class="user-banner__background"></div>
+      <div *ngIf="isLoading"  class="user-banner__background"></div>
+
+      <div class="user-banner__row">
+        <div class="user-banner__inner">
+          <div class="user-banner__small-col">
+            <div class="user-banner__img-wrap">
+              <img class="user-banner__img" src="{{object.avatar}}" alt="" *ngIf="object.avatar && object.avatar.length > 5">
+              <img class="user-banner__img" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!object.avatar || object.avatar.length < 5">
+            </div>
+          </div>
+          <div class="user-banner__large-col user-banner__large-col--self-end">
+            <div class="user-banner__name">{{object.displayName}}</div>
+            <!-- VALUE -->
+
+            <div class="value value--color-white value--fz-18">
+              <img title="{{getUserPower(object.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(object.val_power, 'image')" alt="">
+              <div class="value__value2" style="font-size:18px;color:#fff;">{{getUserReputation(object.val_reputation)}}</div>
+            </div>
+            <!-- /VALUE -->
+          </div>
+			<button class="user-banner__block-btn" *ngIf="userRole == 'a'" (click)="blockUser(object)">
+	          <img src="/frontend_assets_stihi/img/remove.png" alt="">
+	        </button>
+        </div>
+      </div>
+    </div>
+    <div class="user-banner__bottom">
+      <div class="user-banner__row">
+        <div class="user-banner__inner">
+          <div class="user-banner__large-col">
+            <div class="user-banner__large-flex">
+
+              <div class="user-banner__nav">
+                <!-- NAV -->
+                <div class="header__bottom-mobile-menu">
+                  <select class="js-example-basic-single js-example-basic-single-user-header" name="state" id="mobile_navigation_user_header">
+                    <option value="/@{{login}}">Блог</option>
+                    <option value="/@{{login}}/subscriptions">Подписки</option>
+                    <option value="/@{{login}}/subscribers">Подписчики</option>
+                    <option value="/@{{login}}/comments">Комментарии</option>
+                    <option *ngIf="TODO">Награды</option>
+                    <option value="/@{{login}}/wallets">Кошелек</option>
+                    <option *ngIf="userId == id || userRole == 'a'" value="/@{{login}}/settings">Настройки</option>
+                  </select>
+                </div>
+
+                <nav class="nav">
+                  <ul class="nav__ul">
+                    <li class="nav__li" routerLinkActive="nav__li--active" [routerLinkActiveOptions]="{exact: true}">
+                      <a routerLink="/@{{login}}" class="nav__a nav__a--padding">Блог</a>
+                    </li>
+                    <li class="nav__li" routerLinkActive="nav__li--active">
+                      <a routerLink="/@{{login}}/subscriptions" class="nav__a nav__a--padding">Подписки
+                        <span class="nav__quantity">{{subscriptions_counter}}</span>
+                      </a>
+                    </li>
+                    <li class="nav__li" routerLinkActive="nav__li--active">
+                      <a routerLink="/@{{login}}/subscribers" class="nav__a nav__a--padding">Подписчики
+                        <span class="nav__quantity">{{subscribers_counter}}</span>
+                      </a>
+                    </li>
+                    <li class="nav__li" routerLinkActive="nav__li--active">
+                      <a routerLink="/@{{login}}/comments" class="nav__a nav__a--padding">Комментарии</a>
+                    </li>
+                    <li class="nav__li" routerLinkActive="nav__li--active" *ngIf="TODO">
+                      <a routerLink="/@{{login}}/rewards" class="nav__a nav__a--padding">Награды</a>
+                    </li>
+                  </ul>
+                </nav>
+                <!-- /NAV -->
+                <!-- NAV -->
+                <nav class="nav">
+                  <ul class="nav__ul">
+                    <li class="nav__li" routerLinkActive="nav__li--active">
+                      <a routerLink="/@{{login}}/wallets" class="nav__a nav__a--padding">Кошелек</a>
+                    </li>
+                    <li class="nav__li" routerLinkActive="nav__li--active" *ngIf="userId == id || userRole == 'a'">
+                      <a routerLink="/@{{login}}/settings" class="nav__a nav__a--padding">Настройки</a>
+                    </li>
+                    <li class="nav__li noborder" routerLinkActive="nav__li--active" *ngIf="userId != id && userRole != 'a'">
+                      <a href="javascript:void(0)" class="nav__a nav__a--padding" style="opacity:0;cursor:default;">Настройки</a>
+                    </li>
+                  </ul>
+                </nav>
+                <!-- /NAV -->
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /USER BANNER -->
+</div>

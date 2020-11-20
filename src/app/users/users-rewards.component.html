@@ -1,0 +1,104 @@
+<app-users-header *ngIf="!user.ban"></app-users-header>
+
+<div class="content__row" *ngIf="user.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!user.ban">
+  <div class="content__inner">
+
+    <app-users-left-menu remove-host></app-users-left-menu>
+
+
+    <div class="content__col-large">
+      <div class="content__col-large-items-box">
+        <!-- BOX WHITE -->
+        <div class="box-white box-white--padding-20">
+          <div class="box-white__header">
+            <div class="box-white__header-tabs">
+              <!-- TABS -->
+              <div class="tabs">
+                <ul class="tabs__ul">
+                  <li class="tabs__li">
+                    <a href="javascript:void(0);" (click)="type = 'author';load()" [ngClass]="{'tabs__a--active': type == 'author'}" class="tabs__a">Авторские награды</a>
+                  </li>
+                  <li class="tabs__li">
+                    <a href="javascript:void(0);" (click)="type = 'curator';load()" [ngClass]="{'tabs__a--active': type == 'curator'}" class="tabs__a">Кураторские награды</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /TABS -->
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="type == 'curator'">
+            <div class="box-white__linear">
+              <div class="box-white__linear-left">Оценочные кураторские вознаграждения за прошлую неделю:</div>
+              <div class="box-white__linear-right">5.034 Силы Голоса</div>
+            </div>
+            <b class="box-white__body-b">История кураторских наград</b>
+            <div class="box-white__body-table">
+              <!-- TABLE -->
+              <div class="table">
+                <table class="table__table">
+                  <tbody><tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  <tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  <tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  </tbody></table>
+              </div>
+              <!-- END TABLE -->
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="type == 'author'">
+            <div class="box-white__linear">
+              <div class="box-white__linear-left">Оценочные авторские вознаграждения за прошлую неделю:</div>
+              <div class="box-white__linear-right">5.034 Силы Голоса</div>
+            </div>
+            <b class="box-white__body-b">История авторских наград</b>
+            <div class="box-white__body-table">
+              <!-- TABLE -->
+              <div class="table">
+                <table class="table__table">
+                  <tbody><tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  <tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  <tr class="table__tr">
+                    <td class="table__td table__td--width-1">15 часов назад</td>
+                    <td class="table__td">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua. </td>
+                  </tr>
+                  </tbody></table>
+              </div>
+              <!-- END TABLE -->
+            </div>
+          </div>
+
+        </div>
+        <!-- /BOX WHITE -->
+      </div>
+    </div>
+
+  </div>
+</div>

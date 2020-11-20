@@ -1,0 +1,78 @@
+
+
+
+
+
+<app-users-header *ngIf="!user.ban"></app-users-header>
+
+<div class="content__row" *ngIf="user.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!user.ban">
+  <div class="content__inner">
+
+    <app-users-left-menu remove-host></app-users-left-menu>
+
+    <div class="content__col-large">
+      <!-- BOX WHITE -->
+      <div class="content__col-large-items-box">
+      <div class="box-white box-white--padding-30">
+        <div class="box-white__header">
+          <div class="box-white__header-tabs">
+            <!-- TABS -->
+            <div class="tabs">
+              <ul class="tabs__ul">
+                <li class="tabs__li">
+                  <a routerLink="/@{{login}}/comments/reply" class="tabs__a" [ngClass]="{'tabs__a--active': type == 'reply'}">Получено комментариев</a>
+                  <span class="tabs__value">{{reply_cnt}}</span>
+                </li>
+                <li class="tabs__li">
+                  <a routerLink="/@{{login}}/comments/owner" class="tabs__a" [ngClass]="{'tabs__a--active': type == 'owner'}">Написано комментариев</a>
+                  <span class="tabs__value">{{owner_cnt}}</span>
+                </li>
+              </ul>
+            </div>
+            <!-- /TABS -->
+          </div>
+        </div>
+        <div class="box-white__body">
+          <div class="box-white__body-comments-list">
+            <!-- COMMENTS LIST -->
+            <div class="comments-list">
+              <ng-container *ngFor="let o of comments; index as i">
+                <div class="comments-list__item">
+
+                  <div class="comments-list__item-header" style="color: black;">Комментарий на “<a href="/posts/{{o.parent_id}}" (click)="openSinglePost(o.parent_id, '/posts/comments')" class="item__name comments_link" style="text-decoration: none;margin:0px;font-weight: 700;font-size:inherit;font-family: inherit;color: black;vertical-align: baseline;">{{commentsArticles[o.parent_id]?.title}}</a>” (<span class="comments-list__item-header-a"><a routerLink="/@{{commentsArticles[o.parent_id]?.displayNameBlog}}" class="item__name comments_link" style="font-weight: 700;font-size:inherit;font-family: inherit;color: block;vertical-align: initial;vertical-align: baseline;">
+                        <ng-container *ngIf="!commentsArticles[o.parent_id]?.user.displayName">{{commentsArticles[o.parent_id]?.displayName}}</ng-container>
+                      </a>
+
+                      <div class="value" routerLink="/@{{commentsArticles[o.parent_id]?.user.displayNameBlog}}" style="margin-left:0px">
+                        <img title="{{getUserPower(commentsArticles[o.parent_id]?.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(commentsArticles[o.parent_id]?.user.val_power, 'image')" alt="">
+                        <div class="value__value2" title="Репутация">{{getUserReputation(commentsArticles[o.parent_id]?.user?.val_reputation)}}</div>
+                      </div>
+                    </span>)
+                  </div>
+
+                  <div class="comments-list__item-body">
+                    <app-comments [returnUri]="['/posts/comments']" [comments]="[o]" [current_user_votes]="comments_current_user_votes" [votes]="comments_votes" [level]="0" [postId]="o.parent_id" id="commentid{{i}}"></app-comments>
+                  </div>
+                </div>
+              </ng-container>
+
+              <app-posts-item [isLoading]="true" *ngIf="isLoading"></app-posts-item>
+
+            </div>
+            <!-- /COMMENTS LIST -->
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- /BOX WHITE -->
+    </div>
+    
+    
+  </div>
+</div>

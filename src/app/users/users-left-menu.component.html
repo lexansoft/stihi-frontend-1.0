@@ -1,0 +1,67 @@
+<div class="content__col-small">
+  <div class="content__col-small-box">
+    <!-- BOX -->
+    <div class="box">
+      <div class="box__body">
+        <!-- TEXT ABOUT -->
+        <div class="text-about">
+          <div class="text-about__header">
+            <div class="text-about__title">О себе:</div>
+            <a class="text-about__add-work" routerLink="/posts/add" *ngIf="userId == id || userRole == 'a'">Добавить произведение</a>
+
+            <a class="text-about__add-work" href="javascript:void(0)" (click)="subscribe()" *ngIf="userId > 0 && !isSubscribedToUser && userId != id">Подписаться</a>
+            <a class="text-about__add-work" href="javascript:void(0)" (click)="unSubscribe()" *ngIf="userId > 0 && isSubscribedToUser && userId != id">Отписаться</a>
+
+          </div>
+          <div class="text-about__body">
+            <p class="text-about__p" *ngIf="object.biography" markdown [data]="object.biography" style="word-break: break-word;"></p>
+          </div>
+          <div class="text-about__footer">
+            <!-- SMALL LIST -->
+            <div class="small-list">
+              <ul class="small-list__ul">
+                <li class="small-list__li" *ngIf="object.place">Живу:
+                  <span class="small-list__span">{{object.place}}</span>
+                </li>
+                <li class="small-list__li" *ngIf="object.web_size || object.web_site">Веб-сайт:
+                  <span class="small-list__span" *ngIf="object.web_size"><a href="{{object.web_size}}" target="_blank">{{object.web_size}}</a></span>
+                  <span class="small-list__span" *ngIf="object.web_site"><a href="{{object.web_site}}" target="_blank">{{object.web_site}}</a></span>
+                </li>
+              </ul>
+            </div>
+            <!-- END SMALL LIST -->
+          </div>
+          <div class="text-about__invite-wrap" *ngIf="userId > 0">
+            <a class="text-about__invite" routerLink="/@{{login}}/blog/invite">Пригласить читателей в этот блог</a>
+          </div>
+        </div>
+        <!-- /TEXT ABOUT -->
+      </div>
+    </div>
+    <!-- /BOX -->
+  </div>
+  <div class="content__col-small-box" *ngIf="true || isShowRubrics">
+    <!-- BOX -->
+    <div class="box">
+      <div class="box__body">
+        <!-- CASES -->
+        <div class="cases">
+          <div class="cases__header">
+            <div class="cases__header-top-title-wrap" *ngIf="TODO">
+              <span class="cases__header-top-title"><a class="cases__header-a" routerLink="/@{{login}}">Всего произведений</a></span>
+              <span class="cases__header-top-val">120</span>
+            </div>
+            <div class="cases__title">Рубрики блога:</div>
+            <ul class="cases__ul">
+              <ng-container *ngFor="let o of tags">
+                <li class="cases__li" *ngIf="o != 'stihi-io'"><a class="cases__header-a" routerLink="/@{{login}}/blog/{{o}}" [ngClass]="{'cases__header-a-active': isRouterLinkActive('/@' + login + '/blog/' + o, router.url)}">{{o}}</a></li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+        <!-- /CASES -->
+      </div>
+    </div>
+    <!-- /BOX -->
+  </div>
+</div>

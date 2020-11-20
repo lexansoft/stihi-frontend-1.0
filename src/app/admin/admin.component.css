@@ -1,0 +1,17 @@
+.user-avatar-list__table {
+  display: table;
+}
+
+.user-avatar-list__tr {
+  display: table-row;
+}
+
+.user-avatar-list__cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px 0;
+}
+
+.value__value {
+  font-size: 12px;
+}

@@ -1,0 +1,348 @@
+<div class="content__row" *ngIf="content_banned">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Произведение заблокировано за нарушение условий пользовательского соглашения</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!content_banned">
+  <div class="content__inner">
+    <div class="content__col-large">
+
+      <div class="content__col-large-description" *ngIf="['index', 'main'].indexOf(type) != -1">
+        <!-- DESCRIPTION -->
+        <div class="description">
+          <h1 class="description__h1" *ngIf="false">Добро пожаловать!</h1>
+          <p class="description__p">Литературный портал на блокчейне, пространство свободной публикации и общения между авторами и читателями.</p>
+        </div>
+        <!-- /DESCRIPTION -->
+      </div>
+
+      <!-- ITEMS BOX -->
+      <div class="items-box" [ngClass]="{'no-border-margin': ['index', 'main'].indexOf(type) == -1}" *ngIf=" ['index', 'main'].indexOf(type) > -1">
+        <div class="items-box__header" >
+            <div class="items-box__title">Анонсы</div>
+
+            <div class="simpleDropdown">
+              <div class="simpleDropdown__target">
+                <a class="items-box__header-link" href="javascript:void(0)" *ngIf="userId > 0" (click)="showAnnounceText()">Добавить анонс</a>
+              </div>
+              <div class="simpleDropdown__container" style="min-width:300px">
+                Вы можете добавить анонс на странице произведения.
+              </div>
+            </div>
+
+        </div>
+        <div class="items-box__body">
+          <!-- ITEMS LIST -->
+          <div class="items-list">
+
+            <app-posts-item [leaderTime]="time" [category]="tag" [isAnnouncement]="true" [page]="page" [listTitle]="type" [o]="o" [current_user_votes]="current_user_votes_announces" [votes]="votes" *ngFor="let o of announces; index as i" id="announcementid{{i}}" [attr.announcementlistelement]="o.id"></app-posts-item>
+
+            <app-posts-item [isLoading]="true" *ngIf="isLoading"></app-posts-item>
+
+          </div>
+          <!-- /ITEMS LIST -->
+        </div>
+      </div>
+
+      <div class="content__col-large-item-box" [ngClass]="{'content__col-large-item-box--line': ['index', 'main'].indexOf(type) == -1}" *ngIf=" ['index', 'main'].indexOf(type) == -1">
+        <!-- ITEMS BOX -->
+        <div class="items-box" [ngClass]="{'no-border-margin': ['index', 'main'].indexOf(type) == -1}">
+          <div class="items-box__header" >
+            <div class="items-box__title">Анонсы</div>
+
+            <div class="simpleDropdown">
+              <div class="simpleDropdown__target">
+                <a class="items-box__header-link" href="javascript:void(0)" *ngIf="userId > 0" (click)="showAnnounceText()">Добавить анонс</a>
+              </div>
+              <div class="simpleDropdown__container" style="min-width:300px">
+                Вы можете добавить анонс на странице произведения.
+              </div>
+            </div>
+
+          </div>
+          <div class="items-box__body">
+            <!-- ITEMS LIST -->
+            <div class="items-list">
+
+              <app-posts-item [leaderTime]="time" [category]="tag" [isAnnouncement]="true" [page]="page" [listTitle]="type" [o]="o" [current_user_votes]="current_user_votes_announces" [votes]="votes" *ngFor="let o of announces; index as i" id="announcementid{{i}}" [attr.announcementlistelement]="o.id"></app-posts-item>
+
+            </div>
+            <!-- /ITEMS LIST -->
+          </div>
+        </div>
+        <!-- /ITEM BOX -->
+      </div>
+
+      <div class="content__col-large-item-box2" *ngIf="['comments'].indexOf(type) !== -1">
+        <!-- BOX WHITE -->
+        <div class="box-white box-white--padding-20">
+          <div class="comments-list">
+
+            <ng-container *ngFor="let o of comments; index as i">
+              <div class="comments-list__item">
+
+                <div class="comments-list__item-header" *ngIf="commentsArticles[o.parent_id]" style="color: black;">Комментарий на “<a href="/posts/{{o.parent_id}}" (click)="openSinglePost(o.parent_id, '/posts/comments')" class="item__name comments_link" style="text-decoration: none;margin:0px;font-weight: 700;font-size:inherit;font-family: inherit;color: black;vertical-align: baseline;display: inline!important;">{{commentsArticles[o.parent_id].title}}</a>” (<span class="comments-list__item-header-a"><a *ngIf="commentsArticles[o.parent_id]" routerLink="/@{{commentsArticles[o.parent_id].displayNameBlog}}" class="item__name comments_link" style="font-weight: 700;font-size:inherit;font-family: inherit;color: block;vertical-align: initial;vertical-align: baseline;display: inline!important;">
+                      <ng-container>{{commentsArticles[o.parent_id].displayName}}</ng-container>
+                    </a>
+
+                    <div *ngIf="commentsArticles[o.parent_id]" class="value" routerLink="/@{{commentsArticles[o.parent_id].displayNameBlog}}" style="margin-left:0px">
+                      <img title="{{getUserPower(commentsArticles[o.parent_id].user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(commentsArticles[o.parent_id].user.val_power, 'image')" alt="">
+                      <div class="value__value2" title="Репутация">{{getUserReputation(commentsArticles[o.parent_id].user.val_reputation)}}</div>
+                    </div>
+                  </span>)
+                </div>
+
+                <div class="comments-list__item-body">
+                  <app-comments [returnUri]="['/posts/comments']" [comments]="[o]" [current_user_votes]="comments_current_user_votes" [votes]="comments_votes" [level]="0" [postId]="o.parent_id" id="commentid{{i}}"></app-comments>
+                </div>
+              </div>
+            </ng-container>
+
+            <app-posts-item [isLoading]="true" *ngIf="isLoading"></app-posts-item>
+
+          </div>
+        </div>
+        <!-- /BOX WHITE -->
+      </div>
+
+      <div class="content__col-large-item-box" *ngIf="['index', 'comments', 'main'].indexOf(type) == -1">
+        <!-- ITEMS BOX -->
+        <div class="items-box">
+          <div class="items-box__header" *ngIf="['popular'].indexOf(type) != -1">
+            <div class="items-box__header-tabs">
+              <!-- TABS -->
+              <div class="tabs">
+                <ul class="tabs__ul">
+                  <li class="tabs__li" [ngClass]="{'tabs__a--active': time == 60 * 60 * 24 * 7}">
+                    <a href="javascript:void(0)" (click)="time = 60 * 60 * 24 * 7;load()" class="tabs__a">За неделю</a>
+                  </li>
+                  <li class="tabs__li" [ngClass]="{'tabs__a--active': time == 60 * 60 * 24 * 30}">
+                    <a href="javascript:void(0)" (click)="time = 60 * 60 * 24 * 30;load()" class="tabs__a">За месяц</a>
+                  </li>
+                  <li class="tabs__li" [ngClass]="{'tabs__a--active': time == 60 * 60 * 24 * 30 * 12}">
+                    <a href="javascript:void(0)" (click)="time = 60 * 60 * 24 * 30 * 12;load()" class="tabs__a">За год</a>
+                  </li>
+                  <li class="tabs__li" [ngClass]="{'tabs__a--active': time == 60 * 60 * 24 * 30 * 12 * 10}">
+                    <a href="javascript:void(0)" (click)="time = 60 * 60 * 24 * 30 * 12 * 10;load()" class="tabs__a">За все время</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /TABS -->
+            </div>
+          </div>
+          <div class="items-box__body">
+            <!-- ITEMS LIST -->
+            <div class="items-list">
+
+              <app-posts-item [leaderTime]="time" [category]="tag" [page]="page" [listTitle]="type" [o]="o" [current_user_votes]="current_user_votes" [votes]="votes" *ngFor="let o of objects; index as i" id="postid{{i}}" [attr.postlistelement]="o.id"></app-posts-item>
+
+              <app-posts-item [isLoading]="true" *ngIf="isLoading"></app-posts-item>
+
+            </div>
+            <!-- /ITEMS LIST -->
+          </div>
+        </div>
+        <!-- /ITEM BOX -->
+      </div>
+
+    </div>
+    <!-- [ngClass]="{'content__col-small--sm-hide': !(type == 'main' && leader.id > 0) && !TODO && !(['feed', 'new', 'popular', 'comments', 'actual'].indexOf(type) == -1)}" -->
+    <div class="content__col-small">
+      <div class="content__col-small-box" *ngIf="type == 'main' && leader.id > 0">
+        <!-- BOX -->
+        <div class="box">
+          <div class="box__header">
+            <div class="box__title box__title--border">
+              <b>Лидер недели</b>
+            </div>
+          </div>
+          <div class="box__body">
+            <!-- USER INFO -->
+            <div class="user-info">
+              <div class="user-info__header">
+                <div class="user-info__avatar">
+                  <a routerLink="/@{{leader.displayNameBlog}}">
+                    <!-- AVATAR -->
+                    <div class="avatar">
+
+                      <ng-container *ngIf="!leader.user.avatar || leader.user.avatar.length < 3">
+                        <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="">
+                      </ng-container>
+
+                      <ng-container *ngIf="leader.user.avatar && leader.user.avatar.length > 3">
+                        <img class="avatar__avatar" src="{{leader.user.avatar}}" alt="">
+                      </ng-container>
+
+                      <div class="avatar__user-right">
+                        <div class="avatar__avatar-name">{{leader.displayName}}</div>
+                        <!-- VALUE -->
+
+                        <div class="value">
+                          <img title="{{getUserPower(leader.user.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(leader.user.val_power, 'image')" alt="">
+                          <div class="value__value2" title="Репутация">{{getUserReputation(leader.user.val_reputation)}}</div>
+                        </div>
+                        <!-- /VALUE -->
+                      </div>
+                    </div>
+                    <!-- /AVATAR -->
+                  </a>
+                </div>
+              </div>
+              <div class="user-info__body">
+                <div class="user-info__body-title"><a href="/posts/{{leader.id}}"  (click)="openSinglePost(leader.id, '/posts/index')">{{leader.title}}</a>
+                </div>
+                <div class="user-info__body-desc"><a href="/posts/{{leader.id}}"  (click)="openSinglePost(leader.id, '/posts/index')" class="removePMargins">
+                  <ng-container *ngIf="leader.body && leader.body.length > 3" remove-host>{{leader.body}}</ng-container>
+                  <markdown *ngIf="!leader.body || leader.body.length <= 3" [data]="leader.image" remove-host></markdown>
+                </a></div>
+              </div>
+              <div class="user-info__footer">
+                <div class="user-info__footer-controls">
+                  <!-- CONSTROLS -->
+                  <div class="controls">
+
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': leader.is_show_votes}">
+                      <div class="controls__counter simpleDropdown__target">
+                        <span title="{{leader.votes_count}} голосов">{{leader.votes_count}}</span>
+                      </div>
+                      <div class="simpleDropdown__container">
+                        <ul class="golos-list" *ngIf="leader_votes && leader_votes[leader.id]">
+                          <li class="golos-list__li" *ngFor="let v of leader_votes[leader.id]">
+                            <a class="golos-list__a" routerLink="/@{{v.voter}}">
+                              <span class="golos-list__span">
+                                <ng-container *ngIf="v.weight >= 0">+</ng-container>
+                                <ng-container *ngIf="v.weight < 0">-</ng-container>
+                                {{v.voter}}
+                              </span>
+                              <span>{{v.weight/100}}%</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="simpleDropdown" [ngClass]="{'simpleDropdown--show': leader.is_show_price}">
+                      <div class="controls__price simpleDropdown__target" (click)="togglePrice(leader, !leader.is_show_price)">{{getEarnings(leader, 3)}} GOLOS</div>
+                      <div class="simpleDropdown__container">
+                        <p>Потенциальная выплата {{getEarnings(leader, 3)}} GOLOS</p>
+                        <p>через 7 дней</p>
+                      </div>
+                    </div>
+
+                    <span title="{{leader.comments_count}} комментариев" class="controls__comments-btn">{{leader.comments_count}}</span>
+                  </div>
+                  <!-- /CONSTROLS -->
+                </div>
+                <div class="user-info__btn">
+                  <!-- BTN DEFAULT -->
+                  <a class="btn-default btn-default--small" routerLink="/@{{leader.displayNameBlog}}">посетить блог автора</a>
+                  <!-- /BTN DEFAULT -->
+                  <div class="user-info__btn-arrow">
+                    <!-- ARROW -->
+                    <a class="arrow" routerLink="/posts/popular"></a>
+                    <!-- /ARROW -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /USER INFO -->
+          </div>
+        </div>
+        <!-- /BOX -->
+      </div>
+      <div class="content__col-small-box">
+        <!-- BOX -->
+        <div class="box">
+          <div class="box__header">
+            <div class="box__title" onClick="$('.auth').css('display', 'block')">Авторы приглашают</div>
+          </div>
+          <div class="box__body">
+            <!-- AVATAR LIST -->
+            <div class="avatar-list">
+              <ng-container *ngFor="let o of invites; let i = index">
+              <div class="avatar-list__avatar" *ngIf="i < 5">
+                <a routerLink="/@{{o.author.displayNameBlog}}">
+                  <!-- AVATAR -->
+                  <div class="avatar avatar--avatar-img-max-width6">
+
+                    <img class="avatar__avatar" src="{{o.author.avatar}}" alt="" *ngIf="o.author.avatar && o.author.avatar.length > 5">
+                    <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!o.author.avatar || o.author.avatar.length < 5">
+
+                    <div class="avatar__user-right">
+                      <div class="avatar__avatar-name">{{o.author.displayName}}</div>
+                      <!-- VALUE -->
+                      <div class="value">
+                        <img title="{{getUserPower(o.author.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o.author.val_power, 'image')" alt="">
+                        <div class="value__value2" title="Репутация">{{getUserReputation(o.author.val_reputation)}}</div>
+                      </div>
+                      <!-- /VALUE -->
+                    </div>
+                  </div>
+                  <!-- /AVATAR -->
+                </a>
+              </div>
+              </ng-container>
+
+            </div>
+            <!-- AVATAR LIST -->
+          </div>
+          <div class="box__footer" *ngIf="userId > 0" >
+            <a class="box__link" href="javascript:void(0)" *ngIf="userId > 0" (click)="showInviteText()">Добавить Ваше имя</a>
+            <div class="user-info__btn-arrow">
+              <!-- ARROW -->
+              <a class="arrow" href="javascript:void(0)" *ngIf="userId > 0" (click)="showInviteText()"></a>
+              <!-- /ARROW -->
+            </div>
+          </div>
+        </div>
+        <!-- /BOX -->
+      </div>
+      <div class="content__col-small-box" *ngIf="['feed', 'new', 'popular', 'comments', 'actual'].indexOf(type) == -1">
+        <!-- BOX -->
+        <div class="box">
+          <div class="box__header">
+            <div class="box__title">Новые авторы
+            </div>
+          </div>
+          <div class="box__body">
+            <!-- AVATAR LIST HORIZONTAL -->
+            <div class="avatar-list-horizontal">
+
+              <ng-container *ngFor="let o of new_authors; let i = index">
+              <div class="avatar-list-horizontal__item">
+                <a routerLink="/@{{o.displayNameBlog}}">
+                  <!-- AVATAR -->
+                  <div class="avatar avatar--avatar-img-max-width6 avatar--display-iBlock">
+                    <img class="avatar__avatar" src="{{o.avatar}}" alt="" *ngIf="o.avatar && o.avatar.length > 5">
+                    <img class="avatar__avatar" src="/frontend_assets_stihi/img/avatar_default.png" alt="" *ngIf="!o.avatar || o.avatar.length < 5">
+
+                    <div class="avatar__bottom">
+                      <span class="avatar__name">{{o.displayName}}</span>
+                    </div>
+                  </div>
+                  <!-- /AVATAR -->
+                </a>
+              </div>
+              </ng-container>
+
+            </div>
+            <!-- /AVATAR LIST HORIZONTAL -->
+
+            <div class="box__footer">
+              <a class="box__link" href="javascript:void(0)">&nbsp;</a>
+              <div class="user-info__btn-arrow">
+                <!-- ARROW -->
+                <a class="arrow" routerLink="/authors/new"></a>
+                <!-- /ARROW -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /BOX -->
+      </div>
+    </div>
+  </div>
+</div>
+
+

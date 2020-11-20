@@ -1,0 +1,214 @@
+<app-users-header *ngIf="!user.ban"></app-users-header>
+
+<div class="content__row" *ngIf="user.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!user.ban">
+  <div class="content__inner">
+
+    <app-users-left-menu remove-host></app-users-left-menu>
+
+    <div class="content__col-large">
+      <div class="content__col-large-bw">
+        <!-- BOX WHITE -->
+        <div class="box-white">
+          <div class="box-white__header">
+            <div class="box-white__header-tabs">
+              <!-- TABS -->
+              <div class="tabs">
+                <ul class="tabs__ul">
+                  <li class="tabs__li">
+                    <a href="javascript:void(0)" (click)="mode = 0" class="tabs__a" [ngClass]="{'tabs__a--active': mode == 0}">Редактирование профиля</a>
+                  </li>
+                  <li class="tabs__li" *ngIf="TODO">
+                    <a href="javascript:void(0)" (click)="mode = 1" class="tabs__a" [ngClass]="{'tabs__a--active': mode == 1}">Заблокированные</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /TABS -->
+            </div>
+          </div>
+
+          <div class="box-white__body" *ngIf="mode == 1">
+            <div class="box-white__body-top">
+              <div class="box-white__body-top-filter-field">
+                <!-- FILTER FIELD -->
+                <div class="filter-field">
+                  <input class="filter-field__input" placeholder="Фильтр..." type="text" [(ngModel)]="filter">
+                  <button class="filter-field__btn">
+                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                      <g>
+                        <path class="filter-field__cls-1" d="M157.68 132.5h-56.51L11.18 17h236.5l-90 115.5zM157.68 132.5V211l-56.51 28.33V132.5"></path>
+                      </g>
+                    </svg>
+                  </button>
+                </div>
+                <!-- /FILTER FIELD -->
+              </div>
+            </div>
+            <div class="box-white__body-ual-small">
+              <!-- USER AVATAR LIST -->
+              <div class="user-avatar-list">
+
+                <div class="user-avatar-list__col user-avatar-list__col--padding-0" *ngFor="let z of [0, 1]">
+
+                  <ng-container *ngFor="let o of users | filter:'users':filter; index as i">
+                    <div class="user-avatar-list__item" *ngIf="o.column == z">
+                      <!-- AVATAR -->
+                      <div class="avatar avatar--avatar-img-max-width31">
+                        <img class="avatar__avatar" src="img/avatar.png" alt="">
+                        <div class="avatar__user-right avatar__user-right--flex">
+                          <a routerLink="/@{{o?.name}}" class="avatar__avatar-name avatar__avatar-name--size-medium">Евгения Синкевич</a>
+
+                          <!-- VALUE -->
+                          <div class="value">
+                            <img title="{{getUserPower(o?.val_power, 'fish')}}" class="post__right-rating-img" [src]="getUserPower(o?.val_power, 'image')" alt="">
+                            <div class="value__value2" title="Репутация">{{getUserReputation(o?.val_reputation)}}</div>
+                          </div>
+                          <!-- /VALUE -->
+                          <div class="user-avatar-list__btn">
+                            <!-- BTN SECONDARY -->
+                            <a class="btn-secondary btn-secondary--small btn-secondary--active" href="javascript:void(0)" (click)="blockUser(o)">Разблокировать</a>
+                            <!-- /BTN SECONDARY -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- /AVATAR -->
+                    </div>
+                  </ng-container>
+
+                </div>
+              </div>
+              <!-- /USER AVATAR LIST -->
+            </div>
+          </div>
+
+
+          <div class="box-white__body" *ngIf="mode == 0">
+            <!-- FORM2 -->
+            <div class="form2">
+              <form class="form2__form" (submit)="save();">
+                <div class="form2__col">
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Отображаемое имя</div>
+                    <!-- INPUT -->
+                    <div class="input">
+                      <input value="Евгения Синкевич-Соколинская" class="input__input" placeholder="Имя" type="text" name="object_nickname" [(ngModel)]="object.nickname">
+                    </div>
+                    <!-- /INPUT -->
+                  </div>
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Пол</div>
+                    <!-- SELECT -->
+                    <div class="select">
+                      <select class="select__select" name="object_sex" [(ngModel)]="object.sex">
+                        <option value="">не выбрано</option>
+                        <option value="M">мужской</option>
+                        <option value="F">женский</option>
+                      </select>
+                    </div>
+                    <!-- /SELECT -->
+                  </div>
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Местоположение</div>
+                    <!-- INPUT -->
+                    <div class="input">
+                      <input class="input__input" placeholder="Не выбрано" type="text" name="object_place" [(ngModel)]="object.place">
+                    </div>
+                    <!-- /INPUT -->
+                  </div>
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Веб-сайт</div>
+                    <!-- INPUT -->
+                    <div class="input">
+                      <input class="input__input" value="" placeholder="Не выбрано" type="text" name="object_web_site" [(ngModel)]="object.web_site">
+                    </div>
+                    <!-- /INPUT -->
+                  </div>
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">О себе</div>
+                    <!-- TEXTAREA -->
+                    <div class="textarea">
+                      <textarea placeholder="Текст" class="textarea__textarea" name="object_biography" [(ngModel)]="object.biography"></textarea>
+                    </div>
+                    <!-- /TEXTAREA -->
+                  </div>
+                  <div class="form2__btn">
+                    <!-- BTN DEFAULT -->
+                    <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="save();">обновить</a>
+                    <!-- /BTN DEFAULT -->
+                  </div>
+                </div>
+                <div class="form2__col">
+                  <!--
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Выберите валюту</div>
+                    <div class="select">
+                      <select class="select__select" name="object_currency" [(ngModel)]="object.currency">
+                        <option value="RUB">RUB</option>
+                        <option value="EUR">EUR</option>
+                        <option value="DOL">DOL</option>
+                        <option value="GBG">GBG</option>
+                      </select>
+                    </div>
+                  </div>
+                  -->
+
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Вставьте ссылку на изображение (оптимально 271x288)</div>
+                    <div class="form2__item-inner">
+                      <div class="form2__item-inner-input" style="width: 100%">
+                        <div class="input">
+                          <input placeholder="Ссылка" class="input__input" type="text" name="object_avatar_image" [(ngModel)]="object.avatar">
+                        </div>
+                      </div>
+                      <button class="form2__item-download" *ngIf="false">Загрузить</button>
+                    </div>
+                  </div>
+
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Вставьте ссылку на обложку (оптимально 1520x303)</div>
+                    <div class="form2__item-inner">
+                      <div class="form2__item-inner-input" style="width: 100%">
+                        <div class="input">
+                          <input placeholder="Ссылка" class="input__input" type="text" name="object_background_image" [(ngModel)]="object.background_image">
+                        </div>
+                      </div>
+                      <button class="form2__item-download" *ngIf="false">Загрузить</button>
+                    </div>
+                  </div>
+
+                  <div class="form2__item-wrap">
+                    <div class="form2__item-label">Отображение приватных постов</div>
+                    <!-- SELECT -->
+                    <div class="select">
+                      <select class="select__select" name="object_pvt_posts_show_mode" [(ngModel)]="object.pvt_posts_show_mode">
+                        <option value="H">Всегда скрывать</option>
+                        <option value="S">Всегда отображать</option>
+                        <option value="W">Всегда предупреждать</option>
+                      </select>
+                    </div>
+                    <!-- /SELECT -->
+                  </div>
+
+                  <div class="form2__item-wrap" style="margin-left: 15px;margin-top: 35px;">
+                    <span class="tabs__a">Ваш ID пользователя</span>
+                    <span style="float:right;clear:both;font-size: 16px;font-weight: bold;">{{object.name}}</span>
+                    <div class="form2__item-label" style="padding: 0px; margin-top: 20px;">ID  пользователя может потребоваться для совершения операций по  обмену/покупке/продаже цифровых токенов на биржах</div>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+            <!-- FORM2 -->
+          </div>
+        </div>
+        <!-- /BOX WHITE -->
+      </div>
+    </div>
+
+  </div>
+</div>

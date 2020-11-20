@@ -1,0 +1,201 @@
+<style>
+.ck.ck-button.ck-block-toolbar-button {
+  margin-left: 80px!important;
+}
+</style>
+<div class="content__row" *ngIf="userAuthor.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__body" *ngIf="!userAuthor.ban">
+  <form (submit)="savePost(0)">
+  <!-- BOX WHITE -->
+  <div class="box-white box-white--padding editor_form add_post_form">
+  	<!--
+    <div class="content__header">
+      <h1 class="h1 h1--content-header">
+        <ng-container class="h1" *ngIf="object.content.id == 0">Публикация нового произведения</ng-container>
+        <ng-container class="h1" *ngIf="object.content.id > 0">Редактирование произведения</ng-container>
+      </h1>
+    </div>
+    -->
+    <div class="box-white__form">
+      <!-- FORM -->
+      <div class="form">
+ 
+        <div style="display:inline-block;border-radius: 4px;border: thin solid #98929a;padding-top:8px; padding-bottom: 2px;margin-right: 40px;"  class="image_editor_form">
+      	<div style="display: inline-block;height: 90px!important;overflow: hidden;">
+          <div style="display: flex;justify-content: center;align-content: center;flex-direction: column;width: 260px; height: 90px!important; overflow: hiden!important;cursor: pointer;" class="postImageContainer" (click)="focusPostImageField()">
+          	<p class="form__desc" *ngIf="postImage.length < 10" style="padding: 0px;margin: 0px;margin-top:83px!important;position: absolute;
+    top: 140px;color:rgb(117, 117, 117);font-family:Roboto, sans-serif;font-size:12px;font-weight:400;margin-left: 15px;">Добавьте обложку поста</p>
+			<ckeditor [editor]="EditorImage" (ready)="onReady($event)" [(ngModel)]="postImage" name="object_image2" [config]='{"toolbar":{"items": [ "InsertImage" ],"viewportTopOffset": 250},"image":{"styles":[],"toolbar":[]}, "removePlugins": [ "ImageToolbar", "ImageCaption", "ImageStyle" ]}'></ckeditor>
+          </div>
+      	</div>
+      </div>
+
+      	<div class="editor_blockchain_info">
+
+
+			<div class="typewriter_button tooltipTypewriter" [ngClass]="{'active': isTypewriterEnabled}" (click)="toggleTypewriter();"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+  <span class="tooltiptextTypewriter">Режим печатной машинки</span>
+
+      </div>
+
+	        <p class="form__desc" *ngIf="object.content.id == 0" style="margin-top: 10px; font-family: Roboto, sans-serif!important;font-size: 12px!important;font-weight: 400!important;">Опубликованное произведение останется в блокчейне навсегда.
+	        	<br>Через 7 дней закроется возможность голосования.</p>
+      	</div>
+
+        <div class="form__input" style="margin: 0px">
+          <!-- /INPUT -->
+          <div class="form__field-right">
+        	<div (click)="object.content.isShowPreview = !object.content.isShowPreview" *ngIf="object.content.input_mode" class="editor_preview_button"><img src="/frontend_assets_stihi/img/eye.png" style="vertical-align: bottom"> <a href="javascript:void(0)" class="form__field-right-a" style="display: inline-block;width: 120px;text-align: left;">
+            <ng-container *ngIf="!object.content.isShowPreview">Просмотреть
+            </ng-container>
+            <ng-container *ngIf="object.content.isShowPreview">Маркдаун
+            </ng-container>
+
+          </a></div>
+            <a class="form__field-right-a editor_type_title" href="javascript:void(0)" (click)="switchMode();" *ngIf="object.content.input_mode">Визуальный редактор</a>
+            <a class="form__field-right-a editor_type_title" href="javascript:void(0)" (click)="switchMode();" *ngIf="!object.content.input_mode">Markdown</a>
+          </div>
+        </div>
+        <div style="border: thin solid #ffffff;border-radius: 4px;" class="post_form_content_container">
+          <div class="form__input" style="margin-bottom: 5px;" class="post_form_content_container_sub">
+            <!-- INPUT -->
+            <div class="input">
+              <textarea rows="1" maxlength="200" placeholder="Заголовок" type="text" [(ngModel)]="object.content.title" name="object_title" class="input__input post_title_input" style="resize:none!important;overflow:hidden;padding-right: 84px;" onkeyup="$(this).height(20);$(this).height($(this).prop('scrollHeight'))"></textarea>
+            </div>
+          </div>
+          <div class="form__textarea">
+            <!-- TEXTAREA -->
+            <div class="textarea">
+              <textarea placeholder="Текст произведения" class="textarea__textarea markDownTextarea" *ngIf="object.content.input_mode && (!object.content.isShowPreview)" [(ngModel)]="object.content.body" name="object_description" style="min-height: 330px;padding-left: 84px;padding-right: 84px;border: none;" onkeyup="$(this).height(60);$(this).height($(this).prop('scrollHeight'))" (input)="onCkeditorChange($event)"></textarea>
+
+              <ng-container *ngIf="object.content.input_mode && object.content.isShowPreview">
+                <div class="item3 page editor_preview">
+                  <div class="item3__body">
+                    <ng-container *ngIf="true">
+                    <div class="item3__body-desc" style="text-align:left;margin:0px;width:808px!important;">
+                      <p class="item3__body-p" style="word-break: break-word;margin: 0;padding-top: 0px;">
+                        <markdown class="preview_html" [data]="object.content.body | processPostBody" *ngIf="object.content.input_mode"></markdown>
+                        <markdown class="preview_html" [data]="object.content.body.split('\n').join('')" *ngIf="!object.content.input_mode"></markdown>
+                      </p>
+                    </div>
+                    </ng-container>
+                  </div>
+                </div>                
+              </ng-container>
+
+              <ng-container *ngIf="isEditorReady && !isMobile">
+      	        <ckeditor [ngClass]="{'textareaMuted': object.content.body == 'Текст произведения' && !isMobile}" *ngIf="!object.content.input_mode" [editor]="Editor" [(ngModel)]="object.content.body" name="object_description" (change)="onCkeditorChange($event)"></ckeditor>
+              </ng-container>
+              <ng-container *ngIf="isEditorReady && isMobile">
+                <ckeditor [ngClass]="{'textareaMuted': object.content.body == 'Текст произведения' && !isMobile}" *ngIf="!object.content.input_mode" [editor]="Editor" [(ngModel)]="object.content.body" name="object_description"  (change)="onCkeditorChange($event)"></ckeditor>
+              </ng-container>
+            </div>
+            <!-- /TEXTAREA -->
+          </div>
+        </div>
+        <div class="form__input">
+          <!-- INPUT -->
+          <div class="input" *ngIf="categories.length > 2">
+            <select2 [data]="categories" [value]="object.content.category" (valueChanged)="categoryChanged($event)" [options]="selectOptions" name="object_category" style="font-weight:normal;font-size:12px;color:#757575"></select2>
+            <!--
+            <select class="select__select" [(ngModel)]="object.content.category" name="object_category" style="font-weight:normal;font-size:12px;color:#757575">
+              <option value="">Выберите рубрику</option>
+              <option *ngFor="let c of categories" value="{{c.name}}">
+                <ng-container *ngIf="c.level > 1">--</ng-container>
+                <ng-container *ngIf="c.level == 1">-- </ng-container>
+                {{c.name}}
+              </option>
+            </select>
+            -->
+          </div>
+          <!-- /INPUT -->
+        </div>
+        <div class="form__input">
+          <!-- INPUT -->
+          <div class="input">
+            <input class="input__input" style="font-weight:normal;font-size:12px;color:#757575" placeholder="Добавьте рубрики (теги) личного блога (через запятую)" type="text" [(ngModel)]="object.content.tags_input" name="object_tags">
+          </div>
+          <!-- /INPUT -->
+          <div class="form__field-right">
+            <a class="form__field-right-a" href="https://golos.io/ru--golos/@on0tole/osnovy-oformleniya-postov-na-golose-polnyi-kurs-po-rabote-s-markdown" target="_blank">Курс по работе с Markdown
+            </a>
+          </div>
+        </div>
+        <div class="form__bottom">
+          <div class="form__bottom-left">
+            <div class="form__bottom-submit">
+              <!-- BTN DEFAULT -->
+              <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(0)" *ngIf="object.content.id == 0">добавить произведение</a>
+              <a class="btn-default btn-default--small" href="javascript:void(0)" (click)="savePost(0)" *ngIf="object.content.id > 0">обновить пост</a>
+              <!-- /BTN DEFAULT -->
+            </div>
+            <a class="form__bottom-clear-form" href="javascript:void(0)" (click)="resetForm();">Очистить</a>
+          </div>
+          <div class="form__bottom-right">
+            <div class="form__bottom-select">
+              <div class="form__bottom-select-text" style="font-size:12px!important;">Награды:</div>
+              <div class="form__bottom-select-inner" style="width: 190px;">
+                <!-- SELECT -->
+                <label>
+                <div class="select">
+                  <select class="select__select" name="object_reward" [(ngModel)]="object.reward_type" style="font-size:12px!important;">
+                    <option value="100">Сила Голоса 100%</option>
+                    <option value="50">50% на 50%</option>
+                    <!--<option value="0">Отказаться от выплат</option>-->
+                  </select>
+                </div>
+                </label>
+                <!-- /SELECT -->
+              </div>
+            </div>
+            <div class="form__bottom-checkbox">
+              <!-- CHECKBOX -->
+              <div class="checkbox checkbox--right">
+                <input type="checkbox" class="checkbox__input" id="checkbox41" name="object_vote" [(ngModel)]="object.self_vote" />
+                <label for="checkbox41" style="font-size:12px!important;">Проголосовать</label>
+              </div>
+              <!-- /CHECKBOX -->
+            </div>
+          </div>
+        </div>
+        <!-- CHECKBOX -->
+        <div class="checkbox editor_agree_checkbox">
+          <input type="checkbox" class="checkbox__input" id="checkbox5" name="object_terms" [(ngModel)]="object.content.terms"/>
+          <label for="checkbox5" style="font-size:12px!important;">Подтверждаю согласие с условиями
+            <a [routerLink]="['', {outlets: { popup: 'pages/tos' } } ]">Пользовательского соглашения</a>
+          </label>
+        </div>
+
+        <ng-container *ngIf="false && object.content.input_mode && object.content.isShowPreview">
+	        <div style="display: block;padding-top: 35px;color:#959297;font-size:14px">
+	          предварительный просмотр
+	          <hr>
+	        </div>
+
+	        <div class="item3 page">
+	          <div class="item3__body">
+	            <ng-container *ngIf="true">
+	            <div class="item3__body-desc" style="text-align:left;margin:0px;width:808px!important;">
+	              <p class="item3__body-p" style="word-break: break-word;margin: 0;padding-top: 0px;">
+	                <markdown class="preview_html" [data]="object.content.body | processPostBody" *ngIf="object.content.input_mode"></markdown>
+	                <markdown class="preview_html" [data]="object.content.body.split('\n').join('')" *ngIf="!object.content.input_mode"></markdown>
+	              </p>
+	            </div>
+	            </ng-container>
+	          </div>
+	        </div>
+        </ng-container>
+
+        <!-- /CHECKBOX -->
+      </div>
+      <!-- /FORM -->
+    </div>
+  </div>
+    <!-- /BOX WHITE -->
+  </form>
+</div>

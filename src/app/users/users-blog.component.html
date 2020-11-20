@@ -1,0 +1,33 @@
+<app-users-header *ngIf="!user.ban"></app-users-header>
+
+<div class="content__row" *ngIf="user.ban">
+  <div class="content__inner" style="text-align: center;display: block;padding: 20px">
+    <b>Автор заблокирован за нарушение пользовательского соглашения.</b>
+  </div>
+</div>
+
+<div class="content__row" *ngIf="!user.ban">
+  <div class="content__inner">
+
+    <app-users-left-menu [isShowRubrics]="true" remove-host></app-users-left-menu>
+
+    <div class="content__col-large">
+      <div class="content__col-large-items-box">
+        <!-- ITEMS BOX -->
+        <div class="items-box">
+          <div class="items-box__body">
+            <!-- ITEMS LIST -->
+            <div class="items-list">
+
+              <app-posts-item [category]="tag" [blogId]="user_id" [page]="page" [is_blog]="true" [o]="o" [current_user_votes]="current_user_votes" [votes]="votes" *ngFor="let o of objects; index as i" id="postid{{i}}" [attr.postlistelement]="o.id"></app-posts-item>
+
+              <app-posts-item [isLoading]="true" *ngIf="isLoading"></app-posts-item>
+            </div>
+            <!-- /ITEMS LIST -->
+          </div>
+        </div>
+        <!-- /ITEM BOX -->
+      </div>
+    </div>
+  </div>
+</div>
